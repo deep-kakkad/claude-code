@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Storytelling Frameworks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .framework-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .framework-btn {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .framework-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .framework-btn.active {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .framework {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s;
+        }
+
+        .framework.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .framework-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .framework-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* Hero's Journey Circle */
+        .heros-journey-circle {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 30px auto;
+        }
+
+        .journey-stage {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85em;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .journey-stage:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .journey-stage.active {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            transform: scale(1.2);
+        }
+
+        /* Three Act Structure */
+        .three-act-container {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            min-height: 400px;
+        }
+
+        .act {
+            flex: 1;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .act:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .act h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .act-content {
+            flex: 1;
+        }
+
+        .act-stage {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .act-stage:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+
+        /* Freytag's Pyramid */
+        .pyramid-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            margin: 30px 0;
+        }
+
+        .pyramid-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pyramid-stage {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pyramid-stage:hover .stage-circle {
+            r: 25;
+            fill: #ff6b6b;
+        }
+
+        .pyramid-stage:hover .stage-label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Story Circle */
+        .story-circle-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 30px auto;
+        }
+
+        .circle-stage {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8em;
+            padding: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .circle-stage:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .circle-stage .stage-number {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        /* Details Panel */
+        .details-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            min-height: 200px;
+        }
+
+        .details-panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .details-panel p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .example-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .example-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .example-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .example-content {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stage-highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .heros-journey-circle,
+            .story-circle-container {
+                width: 100%;
+                height: 500px;
+            }
+
+            .journey-stage,
+            .circle-stage {
+                width: 80px;
+                height: 80px;
+                font-size: 0.7em;
+            }
+
+            .three-act-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Storytelling Frameworks</h1>
+        <p class="subtitle">Explore classic narrative structures with interactive visualizations and examples</p>
+
+        <div class="framework-selector">
+            <button class="framework-btn active" onclick="showFramework('heros-journey')">Hero's Journey</button>
+            <button class="framework-btn" onclick="showFramework('three-act')">Three-Act Structure</button>
+            <button class="framework-btn" onclick="showFramework('freytag')">Freytag's Pyramid</button>
+            <button class="framework-btn" onclick="showFramework('story-circle')">Story Circle</button>
+        </div>
+
+        <!-- Hero's Journey -->
+        <div id="heros-journey" class="framework active">
+            <h2 class="framework-title">The Hero's Journey</h2>
+            <p class="framework-description">
+                Joseph Campbell's monomyth describes a 12-stage journey that heroes undergo in stories across cultures.
+                Click on each stage to learn more.
+            </p>
+
+            <div class="heros-journey-circle" id="journey-circle">
+                <!-- Stages will be positioned via JavaScript -->
+            </div>
+
+            <div class="details-panel" id="journey-details">
+                <h3>Select a stage to see details</h3>
+                <p>Click on any stage in the circle above to learn about that part of the hero's journey.</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('heros-journey', 'star-wars')">Star Wars Example</button>
+                    <button class="example-btn" onclick="showExample('heros-journey', 'matrix')">The Matrix Example</button>
+                    <button class="example-btn" onclick="showExample('heros-journey', 'harry-potter')">Harry Potter Example</button>
+                </div>
+                <div id="journey-example-content"></div>
+            </div>
+        </div>
+
+        <!-- Three-Act Structure -->
+        <div id="three-act" class="framework">
+            <h2 class="framework-title">Three-Act Structure</h2>
+            <p class="framework-description">
+                The classic structure divides a story into Setup, Confrontation, and Resolution. Hover over each act to explore its components.
+            </p>
+
+            <div class="three-act-container">
+                <div class="act" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);" onclick="showActDetails(1)">
+                    <h3>Act I: Setup</h3>
+                    <div class="act-content">
+                        <div class="act-stage">Exposition</div>
+                        <div class="act-stage">Inciting Incident</div>
+                        <div class="act-stage">Plot Point 1</div>
+                        <p style="margin-top: 15px; font-size: 0.9em;">~25% of story</p>
+                    </div>
+                </div>
+                <div class="act" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="showActDetails(2)">
+                    <h3>Act II: Confrontation</h3>
+                    <div class="act-content">
+                        <div class="act-stage">Rising Action</div>
+                        <div class="act-stage">Midpoint</div>
+                        <div class="act-stage">Plot Point 2</div>
+                        <div class="act-stage">Crisis</div>
+                        <p style="margin-top: 15px; font-size: 0.9em;">~50% of story</p>
+                    </div>
+                </div>
+                <div class="act" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);" onclick="showActDetails(3)">
+                    <h3>Act III: Resolution</h3>
+                    <div class="act-content">
+                        <div class="act-stage">Climax</div>
+                        <div class="act-stage">Falling Action</div>
+                        <div class="act-stage">Denouement</div>
+                        <p style="margin-top: 15px; font-size: 0.9em;">~25% of story</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-panel" id="three-act-details">
+                <h3>Three-Act Structure</h3>
+                <p>Click on any act above to see detailed breakdown and examples.</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('three-act', 'inception')">Inception Example</button>
+                    <button class="example-btn" onclick="showExample('three-act', 'gladiator')">Gladiator Example</button>
+                </div>
+                <div id="three-act-example-content"></div>
+            </div>
+        </div>
+
+        <!-- Freytag's Pyramid -->
+        <div id="freytag" class="framework">
+            <h2 class="framework-title">Freytag's Pyramid</h2>
+            <p class="framework-description">
+                Gustav Freytag's five-part dramatic structure visualized as a pyramid, showing the rise and fall of dramatic tension.
+            </p>
+
+            <div class="pyramid-container">
+                <svg class="pyramid-svg" viewBox="0 0 800 400">
+                    <!-- Pyramid line -->
+                    <polyline points="100,350 250,150 400,50 550,150 700,350"
+                              stroke="#667eea" stroke-width="4" fill="none" stroke-linejoin="round"/>
+
+                    <!-- Stage 1: Exposition -->
+                    <g class="pyramid-stage" onclick="showPyramidStage(1)">
+                        <circle class="stage-circle" cx="100" cy="350" r="20" fill="#667eea"/>
+                        <text class="stage-label" x="100" y="385" text-anchor="middle" fill="#333" font-size="14">Exposition</text>
+                    </g>
+
+                    <!-- Stage 2: Rising Action -->
+                    <g class="pyramid-stage" onclick="showPyramidStage(2)">
+                        <circle class="stage-circle" cx="250" cy="150" r="20" fill="#667eea"/>
+                        <text class="stage-label" x="250" y="135" text-anchor="middle" fill="#333" font-size="14">Rising Action</text>
+                    </g>
+
+                    <!-- Stage 3: Climax -->
+                    <g class="pyramid-stage" onclick="showPyramidStage(3)">
+                        <circle class="stage-circle" cx="400" cy="50" r="20" fill="#ff6b6b"/>
+                        <text class="stage-label" x="400" y="35" text-anchor="middle" fill="#333" font-size="14">Climax</text>
+                    </g>
+
+                    <!-- Stage 4: Falling Action -->
+                    <g class="pyramid-stage" onclick="showPyramidStage(4)">
+                        <circle class="stage-circle" cx="550" cy="150" r="20" fill="#667eea"/>
+                        <text class="stage-label" x="550" y="135" text-anchor="middle" fill="#333" font-size="14">Falling Action</text>
+                    </g>
+
+                    <!-- Stage 5: Denouement -->
+                    <g class="pyramid-stage" onclick="showPyramidStage(5)">
+                        <circle class="stage-circle" cx="700" cy="350" r="20" fill="#667eea"/>
+                        <text class="stage-label" x="700" y="385" text-anchor="middle" fill="#333" font-size="14">Denouement</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="details-panel" id="freytag-details">
+                <h3>Freytag's Pyramid</h3>
+                <p>Click on any stage in the pyramid above to explore that part of the dramatic structure.</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('freytag', 'romeo-juliet')">Romeo & Juliet Example</button>
+                    <button class="example-btn" onclick="showExample('freytag', 'hamlet')">Hamlet Example</button>
+                </div>
+                <div id="freytag-example-content"></div>
+            </div>
+        </div>
+
+        <!-- Story Circle -->
+        <div id="story-circle" class="framework">
+            <h2 class="framework-title">Dan Harmon's Story Circle</h2>
+            <p class="framework-description">
+                A simplified version of the Hero's Journey, broken into 8 steps. This structure is used in many TV shows and films.
+            </p>
+
+            <div class="story-circle-container" id="circle-container">
+                <!-- Stages will be positioned via JavaScript -->
+            </div>
+
+            <div class="details-panel" id="circle-details">
+                <h3>Story Circle</h3>
+                <p>Click on any step to learn more about that stage of the story circle.</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('story-circle', 'rick-morty')">Rick & Morty Example</button>
+                    <button class="example-btn" onclick="showExample('story-circle', 'community')">Community Example</button>
+                </div>
+                <div id="circle-example-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hero's Journey Data
+        const heroJourneyStages = [
+            { name: "Ordinary World", description: "The hero's normal life before the adventure begins.", example: "Luke Skywalker on Tatooine farm" },
+            { name: "Call to Adventure", description: "The hero is presented with a challenge or quest.", example: "Princess Leia's hologram message" },
+            { name: "Refusal of Call", description: "The hero hesitates or refuses the challenge initially.", example: "Luke says he can't leave his uncle" },
+            { name: "Meeting Mentor", description: "The hero meets a guide who provides advice or training.", example: "Luke meets Obi-Wan Kenobi" },
+            { name: "Crossing Threshold", description: "The hero commits to the adventure and enters the special world.", example: "Luke leaves Tatooine" },
+            { name: "Tests & Allies", description: "The hero faces tests and makes allies and enemies.", example: "Luke meets Han, Chewbacca; escapes Death Star" },
+            { name: "Approach", description: "The hero approaches the innermost cave or greatest challenge.", example: "Approaching the Death Star" },
+            { name: "Ordeal", description: "The hero faces their greatest fear or most difficult challenge.", example: "Obi-Wan's death; trapped in trash compactor" },
+            { name: "Reward", description: "The hero survives death and seizes the sword/reward.", example: "Luke rescues Leia, gets Death Star plans" },
+            { name: "The Road Back", description: "The hero begins the journey back to the ordinary world.", example: "Escaping the Death Star, heading to rebel base" },
+            { name: "Resurrection", description: "The hero faces a final test using everything learned.", example: "Battle of Yavin; destroying Death Star" },
+            { name: "Return w/ Elixir", description: "The hero returns home transformed with wisdom/treasure.", example: "Luke receives medal; becomes hero" }
+        ];
+
+        // Position Hero's Journey stages in a circle
+        function positionJourneyStages() {
+            const circle = document.getElementById('journey-circle');
+            const radius = 230;
+            const centerX = 300;
+            const centerY = 300;
+
+            heroJourneyStages.forEach((stage, index) => {
+                const angle = (index * 30 - 90) * (Math.PI / 180); // Start from top
+                const x = centerX + radius * Math.cos(angle) - 60;
+                const y = centerY + radius * Math.sin(angle) - 60;
+
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'journey-stage';
+                stageDiv.style.left = x + 'px';
+                stageDiv.style.top = y + 'px';
+                stageDiv.textContent = `${index + 1}. ${stage.name}`;
+                stageDiv.onclick = () => showJourneyStage(index);
+                circle.appendChild(stageDiv);
+            });
+        }
+
+        // Show Hero's Journey stage details
+        function showJourneyStage(index) {
+            const stages = document.querySelectorAll('#journey-circle .journey-stage');
+            stages.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+
+            const stage = heroJourneyStages[index];
+            document.getElementById('journey-details').innerHTML = `
+                <h3>Stage ${index + 1}: ${stage.name}</h3>
+                <p>${stage.description}</p>
+                <p><strong>Example:</strong> ${stage.example}</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('heros-journey', 'star-wars')">Star Wars Example</button>
+                    <button class="example-btn" onclick="showExample('heros-journey', 'matrix')">The Matrix Example</button>
+                    <button class="example-btn" onclick="showExample('heros-journey', 'harry-potter')">Harry Potter Example</button>
+                </div>
+                <div id="journey-example-content"></div>
+            `;
+        }
+
+        // Story Circle Data
+        const storyCircleStages = [
+            { name: "You (Comfort Zone)", description: "A character is in a zone of comfort" },
+            { name: "Need", description: "But they want something" },
+            { name: "Go", description: "They enter an unfamiliar situation" },
+            { name: "Search", description: "They adapt to it" },
+            { name: "Find", description: "They get what they wanted" },
+            { name: "Take", description: "They pay a heavy price for it" },
+            { name: "Return", description: "They return to their familiar situation" },
+            { name: "Change", description: "Having changed" }
+        ];
+
+        // Position Story Circle stages
+        function positionCircleStages() {
+            const circle = document.getElementById('circle-container');
+            const radius = 220;
+            const centerX = 300;
+            const centerY = 300;
+
+            storyCircleStages.forEach((stage, index) => {
+                const angle = (index * 45 - 90) * (Math.PI / 180);
+                const x = centerX + radius * Math.cos(angle) - 50;
+                const y = centerY + radius * Math.sin(angle) - 50;
+
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'circle-stage';
+                stageDiv.style.left = x + 'px';
+                stageDiv.style.top = y + 'px';
+                stageDiv.innerHTML = `<div class="stage-number">${index + 1}</div>${stage.name}`;
+                stageDiv.onclick = () => showCircleStage(index);
+                circle.appendChild(stageDiv);
+            });
+        }
+
+        // Show Story Circle stage details
+        function showCircleStage(index) {
+            const stage = storyCircleStages[index];
+            document.getElementById('circle-details').innerHTML = `
+                <h3>Step ${index + 1}: ${stage.name}</h3>
+                <p>${stage.description}</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('story-circle', 'rick-morty')">Rick & Morty Example</button>
+                    <button class="example-btn" onclick="showExample('story-circle', 'community')">Community Example</button>
+                </div>
+                <div id="circle-example-content"></div>
+            `;
+        }
+
+        // Show Three-Act details
+        function showActDetails(actNumber) {
+            const actDetails = {
+                1: {
+                    title: "Act I: Setup",
+                    description: "Introduces the characters, establishes the world, and presents the central conflict. Ends with a turning point that propels the protagonist into the main story.",
+                    example: "In The Matrix, we meet Neo, see his ordinary life, and he receives the call to discover the truth about reality."
+                },
+                2: {
+                    title: "Act II: Confrontation",
+                    description: "The protagonist faces obstacles and opposition. Contains the midpoint twist and builds to a crisis where all seems lost.",
+                    example: "Neo trains, joins the resistance, starts to believe, but then Morpheus is captured and Neo must choose to save him."
+                },
+                3: {
+                    title: "Act III: Resolution",
+                    description: "The climax where the protagonist faces the main conflict, followed by falling action and resolution that shows the new normal.",
+                    example: "Neo embraces his role as The One, defeats Agent Smith, and resurrects - the world is changed forever."
+                }
+            };
+
+            const act = actDetails[actNumber];
+            document.getElementById('three-act-details').innerHTML = `
+                <h3>${act.title}</h3>
+                <p>${act.description}</p>
+                <p><strong>Example:</strong> ${act.example}</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('three-act', 'inception')">Inception Example</button>
+                    <button class="example-btn" onclick="showExample('three-act', 'gladiator')">Gladiator Example</button>
+                </div>
+                <div id="three-act-example-content"></div>
+            `;
+        }
+
+        // Show Freytag's Pyramid stage details
+        function showPyramidStage(stage) {
+            const stages = {
+                1: {
+                    title: "Exposition",
+                    description: "Introduction to characters, setting, and background information. Establishes the status quo.",
+                    example: "In Romeo & Juliet: The feud between Montagues and Capulets is established; we meet Romeo pining for Rosaline."
+                },
+                2: {
+                    title: "Rising Action",
+                    description: "Series of events that create suspense, interest, and tension. Complications arise.",
+                    example: "Romeo meets Juliet, they fall in love, secretly marry; Tybalt kills Mercutio, Romeo kills Tybalt and is banished."
+                },
+                3: {
+                    title: "Climax",
+                    description: "The turning point of maximum tension. The protagonist makes a crucial decision.",
+                    example: "Juliet drinks the potion to fake her death, but Romeo doesn't receive the message explaining the plan."
+                },
+                4: {
+                    title: "Falling Action",
+                    description: "Events following the climax that lead toward resolution. Conflicts begin to resolve.",
+                    example: "Romeo believes Juliet is dead, buys poison, goes to her tomb, and kills himself beside her."
+                },
+                5: {
+                    title: "Denouement",
+                    description: "The resolution where loose ends are tied up and a new normal is established.",
+                    example: "Juliet awakens, finds Romeo dead, kills herself; the families reconcile over their children's deaths."
+                }
+            };
+
+            const stageData = stages[stage];
+            document.getElementById('freytag-details').innerHTML = `
+                <h3>${stageData.title}</h3>
+                <p>${stageData.description}</p>
+                <p><strong>Example:</strong> ${stageData.example}</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="showExample('freytag', 'romeo-juliet')">Romeo & Juliet Example</button>
+                    <button class="example-btn" onclick="showExample('freytag', 'hamlet')">Hamlet Example</button>
+                </div>
+                <div id="freytag-example-content"></div>
+            `;
+        }
+
+        // Show examples for each framework
+        function showExample(framework, example) {
+            const examples = {
+                'heros-journey': {
+                    'star-wars': `
+                        <div class="example-content">
+                            <h4>Star Wars: A New Hope - Hero's Journey</h4>
+                            <p><span class="stage-highlight">Ordinary World:</span> Luke Skywalker lives on Tatooine with his aunt and uncle</p>
+                            <p><span class="stage-highlight">Call to Adventure:</span> Princess Leia's hologram pleads for Obi-Wan's help</p>
+                            <p><span class="stage-highlight">Refusal:</span> Luke says he can't get involved, has to help with the harvest</p>
+                            <p><span class="stage-highlight">Meeting Mentor:</span> Obi-Wan Kenobi reveals Luke's father was a Jedi</p>
+                            <p><span class="stage-highlight">Crossing Threshold:</span> Luke's aunt and uncle killed, he leaves Tatooine</p>
+                            <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Meets Han Solo, rescues Leia, battles stormtroopers</p>
+                            <p><span class="stage-highlight">Approach:</span> Rebel fleet prepares to attack the Death Star</p>
+                            <p><span class="stage-highlight">Ordeal:</span> The trench run, pilots being shot down</p>
+                            <p><span class="stage-highlight">Reward:</span> Death Star destroyed, galaxy saved</p>
+                            <p><span class="stage-highlight">Road Back:</span> Returning to base for celebration</p>
+                            <p><span class="stage-highlight">Resurrection:</span> Luke uses the Force to make the impossible shot</p>
+                            <p><span class="stage-highlight">Return with Elixir:</span> Luke is a hero, has begun his Jedi journey</p>
+                        </div>
+                    `,
+                    'matrix': `
+                        <div class="example-content">
+                            <h4>The Matrix - Hero's Journey</h4>
+                            <p><span class="stage-highlight">Ordinary World:</span> Neo is a programmer by day, hacker by night</p>
+                            <p><span class="stage-highlight">Call to Adventure:</span> "Follow the white rabbit" / Trinity contacts him</p>
+                            <p><span class="stage-highlight">Refusal:</span> Neo almost refuses to escape agents on the building ledge</p>
+                            <p><span class="stage-highlight">Meeting Mentor:</span> Neo meets Morpheus who offers red/blue pill choice</p>
+                            <p><span class="stage-highlight">Crossing Threshold:</span> Neo takes the red pill and awakens in the real world</p>
+                            <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Training programs, learning kung fu, meeting crew and Oracle</p>
+                            <p><span class="stage-highlight">Approach:</span> The plan to free Morpheus from the agents</p>
+                            <p><span class="stage-highlight">Ordeal:</span> Neo shot by Agent Smith, appears to die</p>
+                            <p><span class="stage-highlight">Reward:</span> Neo resurrects as The One, sees the code</p>
+                            <p><span class="stage-highlight">Road Back:</span> Neo must escape the Matrix through the phone</p>
+                            <p><span class="stage-highlight">Resurrection:</span> Trinity's kiss brings Neo back, he fully accepts being The One</p>
+                            <p><span class="stage-highlight">Return with Elixir:</span> Neo has the power to free humanity, makes his promise call</p>
+                        </div>
+                    `,
+                    'harry-potter': `
+                        <div class="example-content">
+                            <h4>Harry Potter and the Sorcerer's Stone - Hero's Journey</h4>
+                            <p><span class="stage-highlight">Ordinary World:</span> Harry lives under the stairs with the Dursleys</p>
+                            <p><span class="stage-highlight">Call to Adventure:</span> Letters from Hogwarts arrive</p>
+                            <p><span class="stage-highlight">Refusal:</span> The Dursleys try to prevent Harry from going</p>
+                            <p><span class="stage-highlight">Meeting Mentor:</span> Hagrid arrives and tells Harry he's a wizard</p>
+                            <p><span class="stage-highlight">Crossing Threshold:</span> Harry boards the Hogwarts Express at Platform 9¾</p>
+                            <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Makes friends with Ron and Hermione, rivalry with Draco, learning magic</p>
+                            <p><span class="stage-highlight">Approach:</span> Discovering the secret of the Philosopher's Stone, going through the trapdoor</p>
+                            <p><span class="stage-highlight">Ordeal:</span> Confronting Voldemort/Quirrell</p>
+                            <p><span class="stage-highlight">Reward:</span> Saving the Stone, winning house cup</p>
+                            <p><span class="stage-highlight">Road Back:</span> End of term, heading back to London</p>
+                            <p><span class="stage-highlight">Resurrection:</span> Harry defeats Voldemort through love's protection</p>
+                            <p><span class="stage-highlight">Return with Elixir:</span> Harry returns to Dursleys but is changed, has friends and a future</p>
+                        </div>
+                    `
+                },
+                'three-act': {
+                    'inception': `
+                        <div class="example-content">
+                            <h4>Inception - Three-Act Structure</h4>
+                            <p><strong>Act I (Setup):</strong></p>
+                            <p><span class="stage-highlight">Exposition:</span> Cobb extracts secrets from dreams, wants to get home to his kids</p>
+                            <p><span class="stage-highlight">Inciting Incident:</span> Saito offers Cobb a chance to go home if he performs inception</p>
+                            <p><span class="stage-highlight">Plot Point 1:</span> Cobb assembles his team and accepts the impossible mission</p>
+
+                            <p><strong>Act II (Confrontation):</strong></p>
+                            <p><span class="stage-highlight">Rising Action:</span> Team plans the three-layer dream, researches Fischer</p>
+                            <p><span class="stage-highlight">Midpoint:</span> They enter the dream; Mal appears and sabotages the mission</p>
+                            <p><span class="stage-highlight">Crisis:</span> Saito is shot, time running out, projections attack</p>
+
+                            <p><strong>Act III (Resolution):</strong></p>
+                            <p><span class="stage-highlight">Climax:</span> Limbo confrontation with Mal, Fischer opens the safe</p>
+                            <p><span class="stage-highlight">Falling Action:</span> The synchronized kicks through dream layers</p>
+                            <p><span class="stage-highlight">Denouement:</span> Cobb returns home; the spinning top (ambiguous ending)</p>
+                        </div>
+                    `,
+                    'gladiator': `
+                        <div class="example-content">
+                            <h4>Gladiator - Three-Act Structure</h4>
+                            <p><strong>Act I (Setup):</strong></p>
+                            <p><span class="stage-highlight">Exposition:</span> Maximus is a great general under Marcus Aurelius</p>
+                            <p><span class="stage-highlight">Inciting Incident:</span> Commodus murders his father and orders Maximus killed</p>
+                            <p><span class="stage-highlight">Plot Point 1:</span> Maximus escapes but his family is murdered; he's captured as a slave</p>
+
+                            <p><strong>Act II (Confrontation):</strong></p>
+                            <p><span class="stage-highlight">Rising Action:</span> Maximus becomes a gladiator, fights in the provinces</p>
+                            <p><span class="stage-highlight">Midpoint:</span> "My name is Maximus..." - reveals himself to Commodus in Colosseum</p>
+                            <p><span class="stage-highlight">Crisis:</span> Commodus threatens Lucilla's son; Maximus is wounded before final fight</p>
+
+                            <p><strong>Act III (Resolution):</strong></p>
+                            <p><span class="stage-highlight">Climax:</span> Maximus defeats Commodus in the arena despite being wounded</p>
+                            <p><span class="stage-highlight">Falling Action:</span> Maximus dies but ensures Rome's return to a republic</p>
+                            <p><span class="stage-highlight">Denouement:</span> Maximus is honored; vision of reuniting with family in afterlife</p>
+                        </div>
+                    `
+                },
+                'freytag': {
+                    'romeo-juliet': `
+                        <div class="example-content">
+                            <h4>Romeo and Juliet - Freytag's Pyramid</h4>
+                            <p><span class="stage-highlight">Exposition:</span> The ancient feud between Montagues and Capulets; Romeo loves Rosaline</p>
+                            <p><span class="stage-highlight">Rising Action:</span> Romeo and Juliet meet and fall in love at the ball; they secretly marry; Tybalt kills Mercutio; Romeo kills Tybalt and is banished</p>
+                            <p><span class="stage-highlight">Climax:</span> Juliet drinks the sleeping potion; the message fails to reach Romeo</p>
+                            <p><span class="stage-highlight">Falling Action:</span> Romeo believes Juliet dead, buys poison, goes to tomb, drinks poison and dies</p>
+                            <p><span class="stage-highlight">Denouement:</span> Juliet wakes, finds Romeo dead, stabs herself; families reconcile over tragedy</p>
+                        </div>
+                    `,
+                    'hamlet': `
+                        <div class="example-content">
+                            <h4>Hamlet - Freytag's Pyramid</h4>
+                            <p><span class="stage-highlight">Exposition:</span> King Hamlet is dead; Claudius married Gertrude; ghost appears</p>
+                            <p><span class="stage-highlight">Rising Action:</span> Ghost tells Hamlet of murder; Hamlet feigns madness; "The Mousetrap" play confirms Claudius's guilt; Hamlet kills Polonius; Ophelia goes mad</p>
+                            <p><span class="stage-highlight">Climax:</span> Hamlet is sent to England but returns; Ophelia drowns</p>
+                            <p><span class="stage-highlight">Falling Action:</span> Hamlet confronts Laertes at Ophelia's funeral; agrees to duel</p>
+                            <p><span class="stage-highlight">Denouement:</span> The poisoned duel kills Hamlet, Laertes, Gertrude, and Claudius; Fortinbras takes throne</p>
+                        </div>
+                    `
+                },
+                'story-circle': {
+                    'rick-morty': `
+                        <div class="example-content">
+                            <h4>Rick and Morty "Pickle Rick" - Story Circle</h4>
+                            <p><span class="stage-highlight">1. You:</span> Rick is in the garage, avoiding family therapy</p>
+                            <p><span class="stage-highlight">2. Need:</span> Rick wants to skip therapy at all costs</p>
+                            <p><span class="stage-highlight">3. Go:</span> Rick turns himself into a pickle to have an excuse</p>
+                            <p><span class="stage-highlight">4. Search:</span> Pickle Rick must survive in sewers, builds exoskeleton from rat parts</p>
+                            <p><span class="stage-highlight">5. Find:</span> Rick becomes action hero, defeats embassy guards</p>
+                            <p><span class="stage-highlight">6. Take:</span> Rick nearly dies multiple times, is covered in filth and gore</p>
+                            <p><span class="stage-highlight">7. Return:</span> Rick returns to therapy as pickle, gets turned back</p>
+                            <p><span class="stage-highlight">8. Change:</span> Rick (hasn't) changed - refuses to acknowledge therapy's value despite clear need</p>
+                        </div>
+                    `,
+                    'community': `
+                        <div class="example-content">
+                            <h4>Community "Remedial Chaos Theory" - Story Circle</h4>
+                            <p><span class="stage-highlight">1. You:</span> The study group is comfortable together at Troy and Abed's apartment</p>
+                            <p><span class="stage-highlight">2. Need:</span> Someone needs to get the pizza delivery</p>
+                            <p><span class="stage-highlight">3. Go:</span> Each timeline explores what happens when different person leaves</p>
+                            <p><span class="stage-highlight">4. Search:</span> Each timeline reveals different group dynamics and conflicts</p>
+                            <p><span class="stage-highlight">5. Find:</span> Discovery that Jeff is the real problem (keeps rolling to avoid going)</p>
+                            <p><span class="stage-highlight">6. Take:</span> The darkest timeline where everything goes wrong</p>
+                            <p><span class="stage-highlight">7. Return:</span> Back to the "prime" timeline where Jeff actually goes</p>
+                            <p><span class="stage-highlight">8. Change:</span> Group is happier when Jeff takes responsibility instead of manipulating</p>
+                        </div>
+                    `
+                }
+            };
+
+            const contentDiv = document.getElementById(`${framework}-example-content`);
+            if (examples[framework] && examples[framework][example]) {
+                contentDiv.innerHTML = examples[framework][example];
+            }
+        }
+
+        // Show framework
+        function showFramework(frameworkId) {
+            // Update buttons
+            document.querySelectorAll('.framework-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update frameworks
+            document.querySelectorAll('.framework').forEach(fw => {
+                fw.classList.remove('active');
+            });
+            document.getElementById(frameworkId).classList.add('active');
+        }
+
+        // Initialize
+        window.onload = function() {
+            positionJourneyStages();
+            positionCircleStages();
+        };
+    </script>
+</body>
+</html>
