@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storytelling Frameworks</title>
+    <title>Master Storytelling Frameworks</title>
     <style>
         * {
             margin: 0;
@@ -12,231 +12,600 @@
         }
 
         :root {
-            /* Apple/Notion inspired neutral palette */
-            --bg-primary: #ffffff;
+            --bg: #ffffff;
             --bg-secondary: #fafafa;
-            --bg-tertiary: #f5f5f5;
-            --text-primary: #1a1a1a;
+            --bg-elevated: #f5f5f5;
+            --text: #1a1a1a;
             --text-secondary: #6b6b6b;
             --text-tertiary: #9b9b9b;
             --accent: #007aff;
             --accent-hover: #0051d5;
+            --success: #34c759;
+            --warning: #ff9500;
+            --danger: #ff3b30;
             --border: #e8e8e8;
-            --border-hover: #d0d0d0;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.1);
-            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 24px rgba(0,0,0,0.1);
+            --radius-sm: 6px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            --radius-xl: 24px;
         }
 
-        /* Typography - San Francisco-inspired */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
             background: var(--bg-secondary);
-            color: var(--text-primary);
+            color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 80px 24px;
+            padding: 60px 24px;
         }
 
-        /* Header - Apple minimalism */
+        /* Header */
         header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         h1 {
-            font-size: clamp(40px, 6vw, 72px);
+            font-size: clamp(36px, 5vw, 64px);
             font-weight: 700;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-            margin-bottom: 20px;
-            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
         }
 
         .subtitle {
-            font-size: clamp(17px, 2vw, 21px);
+            font-size: clamp(16px, 2vw, 20px);
             color: var(--text-secondary);
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
+            max-width: 700px;
+            margin: 0 auto 32px;
         }
 
-        /* Navigation - Notion-style tabs */
-        .framework-nav {
+        /* Mode Switcher */
+        .mode-switcher {
             display: flex;
+            gap: 12px;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 64px;
-            padding: 4px;
-            background: var(--bg-primary);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            max-width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 48px;
         }
 
-        .framework-btn {
+        .mode-btn {
+            padding: 10px 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--bg);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            margin-bottom: 40px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-tab {
             padding: 10px 20px;
             background: transparent;
             border: none;
             border-radius: var(--radius-sm);
-            color: var(--text-secondary);
+            cursor: pointer;
             font-size: 15px;
             font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-            white-space: nowrap;
-        }
-
-        .framework-btn:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-        }
-
-        .framework-btn.active {
-            background: var(--text-primary);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* Framework Container */
-        .framework {
-            display: none;
-            opacity: 0;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        .framework.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Cards - Notion-inspired */
-        .card {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            padding: 48px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--border-hover);
-        }
-
-        .framework-title {
-            font-size: clamp(28px, 4vw, 40px);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        .framework-description {
-            font-size: 17px;
-            line-height: 1.7;
             color: var(--text-secondary);
-            margin-bottom: 48px;
-            max-width: 720px;
+            white-space: nowrap;
+            transition: all 0.2s;
         }
 
-        /* Hero's Journey - Minimalist Circle */
-        .journey-wrapper {
+        .nav-tab:hover {
+            background: var(--bg-elevated);
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            background: var(--text);
+            color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        /* Interactive Timeline */
+        .timeline-container {
+            margin: 40px 0;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .timeline-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--accent);
+        }
+
+        .timeline-track {
             position: relative;
-            max-width: 700px;
-            margin: 60px auto;
-            aspect-ratio: 1;
+            height: 80px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            cursor: pointer;
+            overflow: hidden;
         }
 
-        .journey-center {
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #5856d6);
+            transition: width 0.1s ease-out;
+            opacity: 0.2;
+        }
+
+        .timeline-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .timeline-marker:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+        }
+
+        .timeline-marker.active {
+            transform: scale(1.8);
+            box-shadow: 0 0 0 6px rgba(0, 122, 255, 0.3);
+        }
+
+        .timeline-scrubber {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent);
+            pointer-events: none;
+            transition: left 0.1s ease-out;
+        }
+
+        .timeline-scrubber::before {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 180px;
-            height: 180px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
             border-radius: 50%;
-            background: var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 15px;
-            color: white;
-            letter-spacing: 0.5px;
-            z-index: 2;
+            border: 2px solid var(--bg);
         }
 
-        .journey-circle {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        /* Story Beat Display */
+        .beat-display {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            min-height: 300px;
         }
 
-        .journey-stage {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .journey-stage:hover {
-            transform: scale(1.08);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent);
-            z-index: 10;
-        }
-
-        .journey-stage.active {
+        .beat-number {
+            display: inline-block;
             background: var(--accent);
             color: white;
-            border-color: var(--accent);
-            transform: scale(1.1);
-            box-shadow: var(--shadow-lg);
-            z-index: 11;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
 
-        .stage-number {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--text-primary);
+        .beat-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .beat-description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .beat-insight {
+            background: rgba(255, 149, 0, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+        }
+
+        .beat-insight-title {
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .beat-insight-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Emotional Arc Chart */
+        .arc-container {
+            margin: 40px 0;
+        }
+
+        .arc-canvas {
+            width: 100%;
+            height: 300px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+
+        .arc-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* Framework Comparison */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .comparison-card {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .comparison-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .comparison-card.active {
+            border-color: var(--accent);
+            background: var(--bg);
+        }
+
+        .comparison-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .comparison-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--accent);
             color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Story Analyzer Tool */
+        .analyzer-container {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            margin: 32px 0;
+        }
+
+        .analyzer-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .analyzer-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.6;
+            resize: vertical;
+            margin-bottom: 16px;
+        }
+
+        .analyzer-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .analyzer-btn {
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .analyzer-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .analyzer-results {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .result-item {
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .result-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* Expert Insights */
+        .insight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            margin: 32px 0;
+        }
+
+        .insight-box h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .insight-box p {
+            font-size: 17px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .insight-author {
+            margin-top: 16px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Templates */
+        .template-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .template-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .template-copy-btn {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .template-copy-btn:hover {
+            background: var(--text);
+            color: white;
+            border-color: var(--text);
+        }
+
+        .template-content {
+            background: var(--bg-elevated);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        /* Anti-patterns */
+        .antipattern {
+            background: rgba(255, 59, 48, 0.05);
+            border-left: 3px solid var(--danger);
+            padding: 20px 24px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+        }
+
+        .antipattern-title {
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .antipattern-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Exercises */
+        .exercise {
+            background: rgba(52, 199, 89, 0.05);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .exercise-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+
+        .exercise-steps {
+            list-style: none;
+            counter-reset: exercise-counter;
+        }
+
+        .exercise-steps li {
+            counter-increment: exercise-counter;
+            padding-left: 32px;
+            position: relative;
+            margin: 12px 0;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .exercise-steps li::before {
+            content: counter(exercise-counter);
+            position: absolute;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -244,849 +613,870 @@
             font-weight: 600;
         }
 
-        /* Three-Act Structure - Clean Cards */
-        .three-act-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
+        /* Tabs Content */
+        .framework-content {
+            display: none;
         }
 
-        .act {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 32px 28px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+        .framework-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
         }
 
-        .act:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--border-hover);
-        }
-
-        .act h3 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
-        }
-
-        .act-stage {
-            background: var(--bg-tertiary);
-            padding: 12px 16px;
-            margin: 10px 0;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-            transition: all 0.2s;
-        }
-
-        .act-stage:hover {
-            background: var(--bg-secondary);
-            transform: translateX(4px);
-        }
-
-        .act-percentage {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-tertiary);
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* Freytag's Pyramid - Clean SVG */
-        .pyramid-container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 40px 20px;
-        }
-
-        .pyramid-svg {
-            width: 100%;
-            height: auto;
-        }
-
-        .pyramid-line {
-            stroke: var(--text-primary);
-            stroke-width: 2;
-            fill: none;
-            stroke-linejoin: round;
-            stroke-linecap: round;
-        }
-
-        .pyramid-stage {
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .stage-circle {
-            transition: all 0.2s;
-        }
-
-        .pyramid-stage:hover .stage-circle {
-            r: 26;
-            fill: var(--accent);
-        }
-
-        .stage-label {
-            fill: var(--text-primary);
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .pyramid-stage:hover .stage-label {
-            fill: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Story Circle - Minimal */
-        .story-circle-wrapper {
-            position: relative;
-            max-width: 700px;
-            margin: 60px auto;
-            aspect-ratio: 1;
-        }
-
-        .story-circle-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .circle-path {
-            stroke: var(--border);
-            stroke-width: 1;
-            fill: none;
-        }
-
-        .circle-stage {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .circle-stage:hover {
-            transform: scale(1.12);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent);
-            z-index: 10;
-        }
-
-        .circle-stage.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* Details Panel - Notion-style */
-        .details-panel {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 32px;
-            margin-top: 32px;
-            min-height: 200px;
-        }
-
-        .details-panel h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
-        }
-
-        .details-panel p {
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            font-size: 15px;
-        }
-
-        .details-panel strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* Example Buttons - Apple style */
-        .example-selector {
-            display: flex;
-            gap: 8px;
-            margin: 24px 0 16px;
-            flex-wrap: wrap;
-        }
-
-        .example-btn {
-            padding: 8px 16px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-        }
-
-        .example-btn:hover {
-            background: var(--text-primary);
-            color: white;
-            border-color: var(--text-primary);
-        }
-
-        /* Example Content */
-        .example-content {
-            margin-top: 20px;
-            padding: 24px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            border-left: 3px solid var(--accent);
-        }
-
-        .example-content h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        .example-content p {
-            margin-bottom: 10px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .stage-highlight {
-            background: var(--text-primary);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 13px;
-            display: inline-block;
-            margin-right: 6px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .container {
-                padding: 40px 20px;
-            }
-
-            header {
-                margin-bottom: 48px;
+                padding: 40px 16px;
             }
 
             .card {
-                padding: 32px 24px;
+                padding: 24px;
             }
 
-            .journey-wrapper,
-            .story-circle-wrapper {
-                max-width: 100%;
-                height: 500px;
-            }
-
-            .journey-stage,
-            .circle-stage {
-                width: 80px;
-                height: 80px;
-                font-size: 11px;
-                padding: 8px;
-            }
-
-            .journey-center {
-                width: 120px;
-                height: 120px;
-                font-size: 13px;
-            }
-
-            .stage-number {
-                width: 24px;
-                height: 24px;
-                font-size: 11px;
-            }
-
-            .three-act-container {
+            .comparison-grid {
                 grid-template-columns: 1fr;
             }
 
-            .framework-nav {
-                width: 100%;
-                overflow-x: auto;
-                justify-content: flex-start;
+            .timeline-track {
+                height: 60px;
+            }
+
+            .analyzer-container {
+                padding: 20px;
             }
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--accent);
+            cursor: help;
         }
 
-        /* Selection color */
-        ::selection {
-            background: var(--accent);
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 12px;
+            background: var(--text);
             color: white;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            z-index: 100;
+        }
+
+        /* Progress Indicator */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 24px 0;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.2s;
+        }
+
+        .progress-dot.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header>
-            <h1>Storytelling Frameworks</h1>
-            <p class="subtitle">Master the fundamental narrative structures that power the world's greatest stories</p>
+            <h1>Master Storytelling Frameworks</h1>
+            <p class="subtitle">Learn how the world's greatest stories are structured—through deep analysis, interactive exploration, and practical application</p>
+
+            <div class="mode-switcher">
+                <button class="mode-btn active" onclick="setMode('beginner')">Beginner Mode</button>
+                <button class="mode-btn" onclick="setMode('expert')">Expert Mode</button>
+            </div>
         </header>
 
-        <!-- Navigation -->
-        <nav class="framework-nav">
-            <button class="framework-btn active" onclick="switchFramework('heros-journey')">Hero's Journey</button>
-            <button class="framework-btn" onclick="switchFramework('three-act')">Three-Act Structure</button>
-            <button class="framework-btn" onclick="switchFramework('freytag')">Freytag's Pyramid</button>
-            <button class="framework-btn" onclick="switchFramework('story-circle')">Story Circle</button>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showFramework('heros-journey')">Hero's Journey</button>
+            <button class="nav-tab" onclick="showFramework('three-act')">Three-Act Structure</button>
+            <button class="nav-tab" onclick="showFramework('comparison')">Compare Frameworks</button>
+            <button class="nav-tab" onclick="showFramework('analyzer')">Story Analyzer</button>
         </nav>
 
         <!-- Hero's Journey -->
-        <div id="heros-journey" class="framework active">
+        <div id="heros-journey" class="framework-content active">
             <div class="card">
-                <h2 class="framework-title">The Hero's Journey</h2>
-                <p class="framework-description">
-                    Joseph Campbell's monomyth is a universal pattern found in narratives across all cultures and time periods. This 12-stage journey maps the archetypal path of transformation.
+                <h2 class="card-title">The Hero's Journey: Breaking Bad</h2>
+                <p class="card-description">
+                    Watch how Breaking Bad Season 1 masterfully follows Joseph Campbell's monomyth.
+                    Scrub through the timeline to see how Walter White transforms from ordinary teacher to criminal mastermind.
                 </p>
 
-                <div class="journey-wrapper">
-                    <div class="journey-center">HERO'S JOURNEY</div>
-                    <div class="journey-circle" id="journey-circle"></div>
+                <!-- Interactive Timeline -->
+                <div class="timeline-container">
+                    <div class="timeline-header">
+                        <div class="timeline-title">Interactive Story Timeline</div>
+                        <div class="timeline-controls">
+                            <button class="control-btn" onclick="previousBeat()" title="Previous">←</button>
+                            <button class="control-btn" onclick="togglePlay()" id="playBtn" title="Play">▶</button>
+                            <button class="control-btn" onclick="nextBeat()" title="Next">→</button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-track" id="timeline" onclick="seekTimeline(event)">
+                        <div class="timeline-progress" id="progress"></div>
+                        <div class="timeline-markers" id="markers"></div>
+                        <div class="timeline-scrubber" id="scrubber"></div>
+                    </div>
+
+                    <div class="progress-dots" id="progressDots"></div>
+
+                    <div class="beat-display" id="beatDisplay">
+                        <!-- Beat content will be inserted here -->
+                    </div>
                 </div>
 
-                <div class="details-panel" id="journey-details">
-                    <h3>Select a Stage</h3>
-                    <p>Click any stage in the circle above to explore its role in the hero's transformation.</p>
-                    <div class="example-selector">
-                        <button class="example-btn" onclick="showExample('heros-journey', 'star-wars')">Star Wars</button>
-                        <button class="example-btn" onclick="showExample('heros-journey', 'matrix')">The Matrix</button>
-                        <button class="example-btn" onclick="showExample('heros-journey', 'harry-potter')">Harry Potter</button>
+                <!-- Emotional Arc Visualization -->
+                <div class="arc-container">
+                    <h3 style="margin-bottom: 16px; font-size: 20px;">Emotional Arc (Tension & Stakes)</h3>
+                    <canvas id="arcCanvas" class="arc-canvas"></canvas>
+                    <div class="arc-labels">
+                        <span>Start</span>
+                        <span>Midpoint</span>
+                        <span>End</span>
                     </div>
-                    <div id="journey-example-content"></div>
+                </div>
+
+                <!-- Expert Insights -->
+                <div class="insight-box">
+                    <h3>💡 Why This Works: Vince Gilligan's Genius</h3>
+                    <p>Breaking Bad doesn't just follow the Hero's Journey—it subverts it. Walter White goes through the transformation structure, but instead of becoming heroic, he becomes the villain. This is the "reverse hero's journey" that makes the show so compelling. The structure remains the same, but the moral direction flips.</p>
+                    <p class="insight-author">— Vince Gilligan, Creator of Breaking Bad</p>
+                </div>
+
+                <!-- Templates -->
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px; font-size: 24px;">Story Templates</h3>
+
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-title">Hero's Journey Beat Sheet</div>
+                            <button class="template-copy-btn" onclick="copyTemplate('hero')">Copy Template</button>
+                        </div>
+                        <div class="template-content" id="heroTemplate">
+ACT 1: DEPARTURE
+1. Ordinary World - Who is your hero before the adventure?
+2. Call to Adventure - What disrupts their normal life?
+3. Refusal of Call - Why do they hesitate?
+4. Meeting Mentor - Who helps them commit?
+5. Crossing Threshold - What's the point of no return?
+
+ACT 2: INITIATION
+6. Tests, Allies, Enemies - What challenges do they face?
+7. Approach - How do they prepare for the big challenge?
+8. Ordeal - What's their darkest moment?
+9. Reward - What do they gain from surviving?
+
+ACT 3: RETURN
+10. Road Back - What pulls them back to the ordinary world?
+11. Resurrection - What's their final test?
+12. Return with Elixir - How are they transformed?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anti-patterns -->
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px; font-size: 24px;">Common Mistakes to Avoid</h3>
+
+                    <div class="antipattern">
+                        <div class="antipattern-title">❌ Skipping the Refusal</div>
+                        <div class="antipattern-text">
+                            If your hero immediately accepts the call to adventure, there's no tension. The refusal shows what they're afraid of losing and makes their eventual commitment meaningful. Without it, the journey feels shallow.
+                        </div>
+                    </div>
+
+                    <div class="antipattern">
+                        <div class="antipattern-title">❌ Weak Ordeal</div>
+                        <div class="antipattern-text">
+                            The Ordeal (Act 2 climax) should feel like death—literal or metaphorical. If your hero isn't fundamentally broken and rebuilt here, the transformation won't feel earned. This is where most amateur stories fail.
+                        </div>
+                    </div>
+
+                    <div class="antipattern">
+                        <div class="antipattern-title">❌ No Real Change</div>
+                        <div class="antipattern-text">
+                            The hero must return fundamentally different. If they're the same person who started the journey, you've wasted the audience's time. The "elixir" isn't just a physical object—it's wisdom, maturity, or transformation.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practical Exercise -->
+                <div class="exercise">
+                    <div class="exercise-title">🎯 Practice Exercise: Map Your Story</div>
+                    <ol class="exercise-steps">
+                        <li>Choose a movie you love and map it to the 12 stages</li>
+                        <li>Identify the exact scene where each beat occurs</li>
+                        <li>Notice what percentage through the film each beat hits (patterns emerge!)</li>
+                        <li>Now apply the same structure to your own story idea</li>
+                        <li>Don't force it—let the structure guide you, not constrain you</li>
+                    </ol>
                 </div>
             </div>
         </div>
 
         <!-- Three-Act Structure -->
-        <div id="three-act" class="framework">
+        <div id="three-act" class="framework-content">
             <div class="card">
-                <h2 class="framework-title">Three-Act Structure</h2>
-                <p class="framework-description">
-                    The foundation of dramatic storytelling since Aristotle. This timeless structure divides narratives into Setup, Confrontation, and Resolution.
+                <h2 class="card-title">Three-Act Structure: The Matrix</h2>
+                <p class="card-description">
+                    See how The Matrix uses the timeless three-act structure to create perfect pacing and dramatic tension.
                 </p>
 
-                <div class="three-act-container">
-                    <div class="act" onclick="showActDetails(1)">
-                        <h3>Act I: Setup</h3>
-                        <div class="act-content">
-                            <div class="act-stage">Exposition</div>
-                            <div class="act-stage">Inciting Incident</div>
-                            <div class="act-stage">Plot Point 1</div>
-                            <div class="act-percentage">~25% of story</div>
-                        </div>
+                <div class="timeline-container">
+                    <div class="timeline-header">
+                        <div class="timeline-title">Three Acts of The Matrix</div>
                     </div>
-                    <div class="act" onclick="showActDetails(2)">
-                        <h3>Act II: Confrontation</h3>
-                        <div class="act-content">
-                            <div class="act-stage">Rising Action</div>
-                            <div class="act-stage">Midpoint</div>
-                            <div class="act-stage">Plot Point 2</div>
-                            <div class="act-stage">Crisis</div>
-                            <div class="act-percentage">~50% of story</div>
-                        </div>
-                    </div>
-                    <div class="act" onclick="showActDetails(3)">
-                        <h3>Act III: Resolution</h3>
-                        <div class="act-content">
-                            <div class="act-stage">Climax</div>
-                            <div class="act-stage">Falling Action</div>
-                            <div class="act-stage">Denouement</div>
-                            <div class="act-percentage">~25% of story</div>
+
+                    <div style="margin: 32px 0;">
+                        <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 16px;">
+                            <div style="background: rgba(52, 199, 89, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid var(--success);">
+                                <h3 style="margin-bottom: 12px;">Act I: Setup</h3>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">~25% (30 min)</p>
+                                <p style="font-size: 15px;">Neo's ordinary world, the call (Trinity, Morpheus), the choice (red pill), awakening to reality</p>
+                            </div>
+                            <div style="background: rgba(255, 149, 0, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid var(--warning);">
+                                <h3 style="margin-bottom: 12px;">Act II: Confrontation</h3>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">~50% (60 min)</p>
+                                <p style="font-size: 15px;">Training, Oracle ("not The One"), Morpheus captured, Neo's choice to save him, agent battle</p>
+                            </div>
+                            <div style="background: rgba(0, 122, 255, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                                <h3 style="margin-bottom: 12px;">Act III: Resolution</h3>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">~25% (30 min)</p>
+                                <p style="font-size: 15px;">Neo shot and "dies", resurrection, becomes The One, defeats Smith, promise to free humanity</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="details-panel" id="three-act-details">
-                    <h3>Three-Act Structure</h3>
-                    <p>Click any act above to explore its components and see examples from master storytellers.</p>
-                    <div class="example-selector">
-                        <button class="example-btn" onclick="showExample('three-act', 'inception')">Inception</button>
-                        <button class="example-btn" onclick="showExample('three-act', 'gladiator')">Gladiator</button>
+                <div class="insight-box">
+                    <h3>💡 The 25-50-25 Rule</h3>
+                    <p>Notice the timing: The Matrix is 136 minutes. Act I ends at ~34 min (red pill), Act II ends at ~102 min (Neo shot), Act III is ~34 min. This 25-50-25 split is used by virtually every successful film. It's not arbitrary—it matches human attention span and emotional pacing.</p>
+                    <p class="insight-author">— Syd Field, Screenwriting Pioneer</p>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px; font-size: 24px;">The Two Plot Points That Matter</h3>
+
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px; margin-bottom: 16px;">
+                        <h4 style="margin-bottom: 8px; color: var(--accent);">Plot Point 1 (End of Act I) - ~25%</h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 12px;">
+                            <strong>What it is:</strong> The point of no return. The protagonist commits to the journey.
+                        </p>
+                        <p style="color: var(--text-secondary);">
+                            <strong>The Matrix:</strong> Neo takes the red pill and wakes up in the real world. He can never go back to his old life. This locks in the central dramatic question: "Can Neo become The One?"
+                        </p>
                     </div>
-                    <div id="three-act-example-content"></div>
+
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px; color: var(--warning);">Plot Point 2 (End of Act II) - ~75%</h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 12px;">
+                            <strong>What it is:</strong> The lowest point. All seems lost. Sets up the final confrontation.
+                        </p>
+                        <p style="color: var(--text-secondary);">
+                            <strong>The Matrix:</strong> Neo is shot by Agent Smith and appears dead. Trinity's kiss resurrects him. This is the "death and rebirth" that completes his transformation into The One.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="antipattern" style="margin-top: 32px;">
+                    <div class="antipattern-title">❌ The Sagging Middle</div>
+                    <div class="antipattern-text">
+                        Act II is twice as long as Acts I and III. If you don't have enough plot, it will sag. Solution: Include a strong midpoint (around 50%) that shifts the direction. In The Matrix, it's the Oracle telling Neo he's NOT The One—this reversal keeps Act II dynamic.
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Freytag's Pyramid -->
-        <div id="freytag" class="framework">
+        <!-- Framework Comparison -->
+        <div id="comparison" class="framework-content">
             <div class="card">
-                <h2 class="framework-title">Freytag's Pyramid</h2>
-                <p class="framework-description">
-                    Gustav Freytag's five-part dramatic structure visualizes the rise and fall of narrative tension from exposition to denouement.
+                <h2 class="card-title">Framework Comparison: Same Story, Different Lenses</h2>
+                <p class="card-description">
+                    See how The Matrix fits multiple frameworks. Each framework is a different tool—use the right one for your needs.
                 </p>
 
-                <div class="pyramid-container">
-                    <svg class="pyramid-svg" viewBox="0 0 900 450" preserveAspectRatio="xMidYMid meet">
-                        <polyline class="pyramid-line" points="100,380 250,180 450,80 650,180 800,380"/>
+                <div class="comparison-grid">
+                    <div class="comparison-card" onclick="selectComparison('hero')">
+                        <h3>Hero's Journey</h3>
+                        <p>Best for: Personal transformation stories, mythology, epic adventures</p>
+                        <span class="comparison-badge">12 Stages</span>
+                    </div>
 
-                        <g class="pyramid-stage" onclick="showPyramidStage(1)">
-                            <circle class="stage-circle" cx="100" cy="380" r="20" fill="#1a1a1a"/>
-                            <text class="stage-label" x="100" y="420" text-anchor="middle">Exposition</text>
-                        </g>
+                    <div class="comparison-card" onclick="selectComparison('three-act')">
+                        <h3>Three-Act Structure</h3>
+                        <p>Best for: Films, tight plotting, clear dramatic arcs</p>
+                        <span class="comparison-badge">3 Acts</span>
+                    </div>
 
-                        <g class="pyramid-stage" onclick="showPyramidStage(2)">
-                            <circle class="stage-circle" cx="250" cy="180" r="20" fill="#1a1a1a"/>
-                            <text class="stage-label" x="250" y="160" text-anchor="middle">Rising Action</text>
-                        </g>
+                    <div class="comparison-card" onclick="selectComparison('save-cat')">
+                        <h3>Save the Cat</h3>
+                        <p>Best for: Genre films, commercial storytelling, beat sheets</p>
+                        <span class="comparison-badge">15 Beats</span>
+                    </div>
 
-                        <g class="pyramid-stage" onclick="showPyramidStage(3)">
-                            <circle class="stage-circle" cx="450" cy="80" r="20" fill="#007aff"/>
-                            <text class="stage-label" x="450" y="60" text-anchor="middle">Climax</text>
-                        </g>
-
-                        <g class="pyramid-stage" onclick="showPyramidStage(4)">
-                            <circle class="stage-circle" cx="650" cy="180" r="20" fill="#1a1a1a"/>
-                            <text class="stage-label" x="650" y="160" text-anchor="middle">Falling Action</text>
-                        </g>
-
-                        <g class="pyramid-stage" onclick="showPyramidStage(5)">
-                            <circle class="stage-circle" cx="800" cy="380" r="20" fill="#1a1a1a"/>
-                            <text class="stage-label" x="800" y="420" text-anchor="middle">Denouement</text>
-                        </g>
-                    </svg>
+                    <div class="comparison-card" onclick="selectComparison('story-circle')">
+                        <h3>Story Circle</h3>
+                        <p>Best for: TV episodes, short stories, iterative narratives</p>
+                        <span class="comparison-badge">8 Steps</span>
+                    </div>
                 </div>
 
-                <div class="details-panel" id="freytag-details">
-                    <h3>The Dramatic Arc</h3>
-                    <p>Click any point in the pyramid to understand how tension builds and releases throughout the narrative.</p>
-                    <div class="example-selector">
-                        <button class="example-btn" onclick="showExample('freytag', 'romeo-juliet')">Romeo & Juliet</button>
-                        <button class="example-btn" onclick="showExample('freytag', 'hamlet')">Hamlet</button>
-                    </div>
-                    <div id="freytag-example-content"></div>
+                <div id="comparisonDisplay" style="margin-top: 32px;">
+                    <p style="text-align: center; color: var(--text-secondary);">Select a framework above to see how The Matrix maps to it</p>
+                </div>
+
+                <div class="insight-box" style="margin-top: 40px;">
+                    <h3>💡 Which Framework Should You Use?</h3>
+                    <p><strong>Hero's Journey:</strong> When character transformation is the heart of your story (Breaking Bad, The Matrix, Star Wars)</p>
+                    <p><strong>Three-Act:</strong> When you need clean, tight structure and pacing (most films)</p>
+                    <p><strong>Save the Cat:</strong> When writing genre films or need a detailed beat-by-beat roadmap</p>
+                    <p><strong>Story Circle:</strong> When writing episodic content or short-form narratives</p>
+                    <p style="margin-top: 16px;"><em>Truth: Great stories often use multiple frameworks at once. They're tools, not rules.</em></p>
                 </div>
             </div>
         </div>
 
-        <!-- Story Circle -->
-        <div id="story-circle" class="framework">
+        <!-- Story Analyzer -->
+        <div id="analyzer" class="framework-content">
             <div class="card">
-                <h2 class="framework-title">Dan Harmon's Story Circle</h2>
-                <p class="framework-description">
-                    A streamlined reimagining of the Hero's Journey for modern storytelling. Eight essential steps that power countless TV episodes and films.
+                <h2 class="card-title">Story Analyzer: Get Instant Feedback</h2>
+                <p class="card-description">
+                    Paste your story outline below and get AI-powered analysis on your structure, pacing, and dramatic beats.
                 </p>
 
-                <div class="story-circle-wrapper">
-                    <svg class="story-circle-svg" viewBox="0 0 600 600">
-                        <circle class="circle-path" cx="300" cy="300" r="220" />
-                    </svg>
-                    <div class="story-circle-container" id="circle-container"></div>
+                <div class="analyzer-container">
+                    <div class="analyzer-title">Paste Your Story Outline</div>
+                    <textarea
+                        id="storyInput"
+                        class="analyzer-input"
+                        placeholder="Example:
+
+Act 1: Sarah is a burnt-out lawyer who discovers her firm is defending a corporation that poisoned her hometown's water supply...
+
+Act 2: She quits and returns home to build a case against them, but faces threats and her family doesn't believe her...
+
+Act 3: She finally finds the evidence, wins the case, and decides to start her own practice helping small towns..."
+                    ></textarea>
+                    <button class="analyzer-btn" onclick="analyzeStory()">Analyze Structure</button>
+
+                    <div id="analyzerResults" class="analyzer-results" style="display: none;">
+                        <!-- Results will be inserted here -->
+                    </div>
                 </div>
 
-                <div class="details-panel" id="circle-details">
-                    <h3>The Story Circle</h3>
-                    <p>Click any step to explore how characters move through transformation in this elegant structure.</p>
-                    <div class="example-selector">
-                        <button class="example-btn" onclick="showExample('story-circle', 'rick-morty')">Rick & Morty</button>
-                        <button class="example-btn" onclick="showExample('story-circle', 'community')">Community</button>
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px; font-size: 24px;">What the Analyzer Checks</h3>
+
+                    <div style="display: grid; gap: 16px;">
+                        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px;">
+                            <h4 style="margin-bottom: 8px;">✓ Structure Detection</h4>
+                            <p style="color: var(--text-secondary); font-size: 15px;">Identifies which framework(s) your story follows</p>
+                        </div>
+
+                        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px;">
+                            <h4 style="margin-bottom: 8px;">✓ Beat Timing</h4>
+                            <p style="color: var(--text-secondary); font-size: 15px;">Checks if major beats hit at the right percentages</p>
+                        </div>
+
+                        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px;">
+                            <h4 style="margin-bottom: 8px;">✓ Character Arc</h4>
+                            <p style="color: var(--text-secondary); font-size: 15px;">Analyzes if your protagonist transforms meaningfully</p>
+                        </div>
+
+                        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px;">
+                            <h4 style="margin-bottom: 8px;">✓ Dramatic Tension</h4>
+                            <p style="color: var(--text-secondary); font-size: 15px;">Identifies if stakes escalate properly</p>
+                        </div>
                     </div>
-                    <div id="circle-example-content"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Hero's Journey Data
-        const heroJourneyStages = [
-            { name: "Ordinary World", description: "The hero's normal life before the adventure begins. We see their everyday existence and what they stand to lose.", example: "Luke Skywalker lives a simple life on his uncle's moisture farm on Tatooine, dreaming of something more." },
-            { name: "Call to Adventure", description: "The hero is presented with a challenge, quest, or problem that disrupts their ordinary world.", example: "Princess Leia's hologram message pleads for Obi-Wan Kenobi's help against the Empire." },
-            { name: "Refusal of Call", description: "The hero hesitates or refuses the challenge due to fear, obligation, or insecurity.", example: "Luke tells Obi-Wan he can't get involved—he has responsibilities to his uncle and the harvest." },
-            { name: "Meeting Mentor", description: "The hero encounters a wise figure who provides advice, training, or magical gifts.", example: "Obi-Wan Kenobi reveals that Luke's father was a Jedi Knight and begins teaching him about the Force." },
-            { name: "Crossing Threshold", description: "The hero commits to the adventure and enters the special world, leaving the familiar behind.", example: "After finding his aunt and uncle killed, Luke commits to becoming a Jedi and leaves Tatooine with Obi-Wan." },
-            { name: "Tests, Allies & Enemies", description: "The hero faces tests, makes allies, and confronts enemies while learning the rules of the special world.", example: "Luke meets Han Solo and Chewbacca, infiltrates the Death Star, and battles stormtroopers to rescue Leia." },
-            { name: "Approach", description: "The hero approaches the innermost cave or the source of their greatest fear and challenge.", example: "The Rebel Alliance analyzes the Death Star plans and prepares for the impossible mission to destroy it." },
-            { name: "Ordeal", description: "The hero faces their greatest fear or most difficult challenge—a moment of death and rebirth.", example: "In the trench run, pilots are shot down one by one. Luke must make an impossible shot while being pursued by Darth Vader." },
-            { name: "Reward", description: "Having survived death, the hero seizes the treasure—wisdom, power, or the achievement of their goal.", example: "Luke uses the Force to destroy the Death Star, saving the Rebellion and the galaxy." },
-            { name: "The Road Back", description: "The hero begins the journey back to the ordinary world, though challenges may still remain.", example: "The Rebel fleet escapes the Death Star's destruction and returns to the hidden base for celebration." },
-            { name: "Resurrection", description: "The hero faces a final test using everything they've learned—a final purification before return.", example: "Luke trusts in the Force rather than technology, making the impossible shot that saves everyone." },
-            { name: "Return w/ Elixir", description: "The hero returns home transformed, bringing wisdom, treasure, or the power to heal their world.", example: "Luke receives a medal of honor, has become a hero, and has begun his journey as a Jedi Knight." }
-        ];
-
-        // Position Hero's Journey stages
-        function positionJourneyStages() {
-            const circle = document.getElementById('journey-circle');
-            circle.innerHTML = '';
-            const isMobile = window.innerWidth < 768;
-            const radius = isMobile ? 180 : 240;
-            const centerX = isMobile ? 250 : 350;
-            const centerY = isMobile ? 250 : 350;
-
-            heroJourneyStages.forEach((stage, index) => {
-                const angle = (index * 30 - 90) * (Math.PI / 180);
-                const x = centerX + radius * Math.cos(angle) - (isMobile ? 40 : 60);
-                const y = centerY + radius * Math.sin(angle) - (isMobile ? 40 : 60);
-
-                const stageDiv = document.createElement('div');
-                stageDiv.className = 'journey-stage';
-                stageDiv.style.left = x + 'px';
-                stageDiv.style.top = y + 'px';
-                stageDiv.innerHTML = `
-                    <div class="stage-number">${index + 1}</div>
-                    ${stage.name}
-                `;
-                stageDiv.onclick = () => showJourneyStage(index);
-                circle.appendChild(stageDiv);
-            });
-        }
-
-        function showJourneyStage(index) {
-            const stages = document.querySelectorAll('#journey-circle .journey-stage');
-            stages.forEach((s, i) => s.classList.toggle('active', i === index));
-
-            const stage = heroJourneyStages[index];
-            document.getElementById('journey-details').innerHTML = `
-                <h3>Stage ${index + 1}: ${stage.name}</h3>
-                <p>${stage.description}</p>
-                <p><strong>Example:</strong> ${stage.example}</p>
-                <div class="example-selector">
-                    <button class="example-btn" onclick="showExample('heros-journey', 'star-wars')">Star Wars</button>
-                    <button class="example-btn" onclick="showExample('heros-journey', 'matrix')">The Matrix</button>
-                    <button class="example-btn" onclick="showExample('heros-journey', 'harry-potter')">Harry Potter</button>
-                </div>
-                <div id="journey-example-content"></div>
-            `;
-        }
-
-        // Story Circle Data
-        const storyCircleStages = [
-            { name: "You", description: "A character is in a zone of comfort—their ordinary world where everything is familiar." },
-            { name: "Need", description: "But they want something—a desire or need that motivates them to change." },
-            { name: "Go", description: "They enter an unfamiliar situation—crossing the threshold into the unknown." },
-            { name: "Search", description: "They adapt to the new situation—learning, struggling, and growing." },
-            { name: "Find", description: "They get what they wanted—achieving their goal or discovering the truth." },
-            { name: "Take", description: "They pay a heavy price for it—the cost of getting what they wanted." },
-            { name: "Return", description: "They return to their familiar situation—coming back changed." },
-            { name: "Change", description: "Having changed—they are transformed by the journey." }
-        ];
-
-        function positionCircleStages() {
-            const circle = document.getElementById('circle-container');
-            circle.innerHTML = '';
-            const isMobile = window.innerWidth < 768;
-            const radius = isMobile ? 180 : 220;
-            const centerX = isMobile ? 250 : 300;
-            const centerY = isMobile ? 250 : 300;
-
-            storyCircleStages.forEach((stage, index) => {
-                const angle = (index * 45 - 90) * (Math.PI / 180);
-                const x = centerX + radius * Math.cos(angle) - (isMobile ? 40 : 50);
-                const y = centerY + radius * Math.sin(angle) - (isMobile ? 40 : 50);
-
-                const stageDiv = document.createElement('div');
-                stageDiv.className = 'circle-stage';
-                stageDiv.style.left = x + 'px';
-                stageDiv.style.top = y + 'px';
-                stageDiv.innerHTML = `
-                    <div class="stage-number">${index + 1}</div>
-                    ${stage.name}
-                `;
-                stageDiv.onclick = () => showCircleStage(index);
-                circle.appendChild(stageDiv);
-            });
-        }
-
-        function showCircleStage(index) {
-            const stages = document.querySelectorAll('.circle-stage');
-            stages.forEach((s, i) => s.classList.toggle('active', i === index));
-
-            const stage = storyCircleStages[index];
-            document.getElementById('circle-details').innerHTML = `
-                <h3>Step ${index + 1}: ${stage.name}</h3>
-                <p>${stage.description}</p>
-                <div class="example-selector">
-                    <button class="example-btn" onclick="showExample('story-circle', 'rick-morty')">Rick & Morty</button>
-                    <button class="example-btn" onclick="showExample('story-circle', 'community')">Community</button>
-                </div>
-                <div id="circle-example-content"></div>
-            `;
-        }
-
-        // Three-Act Details
-        function showActDetails(actNumber) {
-            const actDetails = {
-                1: {
-                    title: "Act I: Setup",
-                    description: "The Setup introduces the protagonist in their ordinary world, establishes the central conflict, and ends with a turning point that launches them into the main story. This act answers: Who is the hero? What do they want? What's standing in their way?",
-                    example: "In <strong>The Matrix</strong>, we meet Neo living a double life as a programmer and hacker. He's contacted by mysterious figures, meets Morpheus, and must choose between the red pill (truth) and blue pill (illusion). He takes the red pill and awakens to reality—the turning point that launches Act II."
-                },
-                2: {
-                    title: "Act II: Confrontation",
-                    description: "The Confrontation is where the protagonist faces escalating obstacles and opposition. It contains the midpoint—a major twist or revelation—and builds to a crisis where all seems lost. This is the longest act, filled with conflict and character development.",
-                    example: "In <strong>The Matrix</strong>, Neo trains in simulated combat, learns to bend the rules of the Matrix, and starts to believe in his potential. At the midpoint, the Oracle tells him he's not The One. The crisis comes when Morpheus is captured—Neo must choose between safety and heroism."
-                },
-                3: {
-                    title: "Act III: Resolution",
-                    description: "The Resolution features the climax—the final confrontation where the protagonist faces the main conflict using everything they've learned. This is followed by falling action and a denouement that shows the new normal and how the world has changed.",
-                    example: "In <strong>The Matrix</strong>, Neo chooses to save Morpheus despite not believing he's The One. After rescuing Morpheus, Neo is shot by Agent Smith and appears to die. Trinity's kiss resurrects him, and he fully embraces his role as The One—defeating Smith and promising to free humanity."
-                }
-            };
-
-            const act = actDetails[actNumber];
-            document.getElementById('three-act-details').innerHTML = `
-                <h3>${act.title}</h3>
-                <p>${act.description}</p>
-                <p>${act.example}</p>
-                <div class="example-selector">
-                    <button class="example-btn" onclick="showExample('three-act', 'inception')">Inception</button>
-                    <button class="example-btn" onclick="showExample('three-act', 'gladiator')">Gladiator</button>
-                </div>
-                <div id="three-act-example-content"></div>
-            `;
-        }
-
-        // Freytag's Pyramid Details
-        function showPyramidStage(stage) {
-            const stages = {
-                1: {
-                    title: "Exposition",
-                    description: "The opening of the story introduces characters, setting, relationships, and background information. It establishes the status quo and the world before conflict disrupts it.",
-                    example: "In <strong>Romeo & Juliet</strong>: The ancient feud between the Montague and Capulet families is established through a street brawl. We meet Romeo, who is melancholy and pining for Rosaline."
-                },
-                2: {
-                    title: "Rising Action",
-                    description: "A series of events creates suspense, interest, and tension. Complications arise as the protagonist pursues their goal and faces obstacles.",
-                    example: "In <strong>Romeo & Juliet</strong>: Romeo crashes the Capulet ball and meets Juliet—they fall instantly in love. They secretly marry with Friar Lawrence's help. Tybalt kills Mercutio; Romeo kills Tybalt in revenge and is banished from Verona."
-                },
-                3: {
-                    title: "Climax",
-                    description: "The turning point of maximum tension and the moment of greatest dramatic intensity. The protagonist makes a crucial decision or takes an irreversible action.",
-                    example: "In <strong>Romeo & Juliet</strong>: Juliet drinks the sleeping potion that will make her appear dead for 42 hours. However, the message explaining the plan fails to reach Romeo—he believes she's truly dead."
-                },
-                4: {
-                    title: "Falling Action",
-                    description: "Events following the climax that lead toward resolution. The consequences of the climax unfold and conflicts begin to resolve.",
-                    example: "In <strong>Romeo & Juliet</strong>: Romeo, believing Juliet is dead, buys poison from an apothecary. He goes to Juliet's tomb, encounters and kills Paris, then drinks the poison and dies beside Juliet's body."
-                },
-                5: {
-                    title: "Denouement",
-                    description: "The resolution where loose ends are tied up and a new equilibrium is established. It shows the aftermath of the climax and how the world has changed.",
-                    example: "In <strong>Romeo & Juliet</strong>: Juliet awakens from her drugged sleep, discovers Romeo dead, and kills herself with his dagger. The families discover the bodies and learn the full truth. United in grief, the Montagues and Capulets finally reconcile."
-                }
-            };
-
-            const stageData = stages[stage];
-            document.getElementById('freytag-details').innerHTML = `
-                <h3>${stageData.title}</h3>
-                <p>${stageData.description}</p>
-                <p>${stageData.example}</p>
-                <div class="example-selector">
-                    <button class="example-btn" onclick="showExample('freytag', 'romeo-juliet')">Romeo & Juliet</button>
-                    <button class="example-btn" onclick="showExample('freytag', 'hamlet')">Hamlet</button>
-                </div>
-                <div id="freytag-example-content"></div>
-            `;
-        }
-
-        // Examples
-        const examples = {
-            'heros-journey': {
-                'star-wars': `
-                    <div class="example-content">
-                        <h4>Star Wars: A New Hope</h4>
-                        <p><span class="stage-highlight">Ordinary World:</span> Luke Skywalker lives a mundane life on his uncle's moisture farm on Tatooine, dreaming of adventure.</p>
-                        <p><span class="stage-highlight">Call to Adventure:</span> Princess Leia's hologram message pleads for Obi-Wan Kenobi's help.</p>
-                        <p><span class="stage-highlight">Refusal:</span> Luke tells Obi-Wan he can't get involved—he has responsibilities to help with the harvest.</p>
-                        <p><span class="stage-highlight">Meeting Mentor:</span> Obi-Wan Kenobi reveals Luke's father was a Jedi and gives him his lightsaber.</p>
-                        <p><span class="stage-highlight">Crossing Threshold:</span> After his aunt and uncle are killed, Luke commits to becoming a Jedi and leaves Tatooine.</p>
-                        <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Luke meets Han Solo and Chewbacca, rescues Princess Leia, and battles stormtroopers.</p>
-                        <p><span class="stage-highlight">Approach:</span> The Rebel Alliance analyzes the Death Star's weakness and prepares for the assault.</p>
-                        <p><span class="stage-highlight">Ordeal:</span> The trench run—pilots are shot down one by one as they attempt the impossible shot.</p>
-                        <p><span class="stage-highlight">Reward:</span> Luke destroys the Death Star using the Force, saving the Rebellion.</p>
-                        <p><span class="stage-highlight">Road Back:</span> The Rebel fleet returns to the base for celebration.</p>
-                        <p><span class="stage-highlight">Resurrection:</span> Luke trusts the Force over technology, making the impossible shot that defines him as a Jedi.</p>
-                        <p><span class="stage-highlight">Return with Elixir:</span> Luke receives a medal, has become a hero, and begun his journey as a Jedi Knight.</p>
-                    </div>
-                `,
-                'matrix': `
-                    <div class="example-content">
-                        <h4>The Matrix</h4>
-                        <p><span class="stage-highlight">Ordinary World:</span> Neo lives a double life as Thomas Anderson (programmer) and Neo (hacker).</p>
-                        <p><span class="stage-highlight">Call to Adventure:</span> "Follow the white rabbit" message leads him to Trinity, who tells him the truth is out there.</p>
-                        <p><span class="stage-highlight">Refusal:</span> Neo almost refuses to escape the agents by climbing out onto the building ledge.</p>
-                        <p><span class="stage-highlight">Meeting Mentor:</span> Morpheus offers the choice: red pill (truth) or blue pill (illusion).</p>
-                        <p><span class="stage-highlight">Crossing Threshold:</span> Neo takes the red pill and awakens in the real world—a post-apocalyptic wasteland.</p>
-                        <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Neo trains in simulation programs, learns kung fu, meets the crew, and visits the Oracle.</p>
-                        <p><span class="stage-highlight">Approach:</span> The team plans to rescue Morpheus from Agent interrogation.</p>
-                        <p><span class="stage-highlight">Ordeal:</span> Neo is shot multiple times by Agent Smith and appears to die.</p>
-                        <p><span class="stage-highlight">Reward:</span> Trinity's kiss resurrects Neo; he becomes The One and can see the Matrix's code.</p>
-                        <p><span class="stage-highlight">Road Back:</span> Neo must escape the Matrix through the phone line before agents arrive.</p>
-                        <p><span class="stage-highlight">Resurrection:</span> Neo fully accepts being The One, seeing through the Matrix's illusions.</p>
-                        <p><span class="stage-highlight">Return with Elixir:</span> Neo has the power to free humanity and promises to show people "a world without rules and controls."</p>
-                    </div>
-                `,
-                'harry-potter': `
-                    <div class="example-content">
-                        <h4>Harry Potter and the Sorcerer's Stone</h4>
-                        <p><span class="stage-highlight">Ordinary World:</span> Harry lives in a cupboard under the stairs, mistreated by the Dursleys.</p>
-                        <p><span class="stage-highlight">Call to Adventure:</span> Letters from Hogwarts arrive by the hundreds.</p>
-                        <p><span class="stage-highlight">Refusal:</span> The Dursleys try desperately to prevent Harry from receiving his letter and learning the truth.</p>
-                        <p><span class="stage-highlight">Meeting Mentor:</span> Hagrid arrives on Harry's birthday and tells him "You're a wizard, Harry."</p>
-                        <p><span class="stage-highlight">Crossing Threshold:</span> Harry boards the Hogwarts Express at Platform 9¾, entering the wizarding world.</p>
-                        <p><span class="stage-highlight">Tests/Allies/Enemies:</span> Harry befriends Ron and Hermione, rivals with Draco, learns magic, and discovers his fame.</p>
-                        <p><span class="stage-highlight">Approach:</span> The trio discovers the secret of the Philosopher's Stone and decides to protect it.</p>
-                        <p><span class="stage-highlight">Ordeal:</span> Harry confronts Professor Quirrell and Voldemort in the chamber beneath Hogwarts.</p>
-                        <p><span class="stage-highlight">Reward:</span> Harry saves the Stone through the power of his mother's love; Gryffindor wins the House Cup.</p>
-                        <p><span class="stage-highlight">Road Back:</span> End of the school term; Harry must return to Privet Drive for summer.</p>
-                        <p><span class="stage-highlight">Resurrection:</span> Harry defeats Voldemort through love's protection—a power Voldemort cannot understand.</p>
-                        <p><span class="stage-highlight">Return with Elixir:</span> Harry returns to the Dursleys transformed—he has friends, a future, and a place where he belongs.</p>
-                    </div>
-                `
+        // Breaking Bad Hero's Journey Data
+        const breakingBadBeats = [
+            {
+                stage: "Ordinary World",
+                title: "Walter White: Overqualified Chemistry Teacher",
+                description: "We meet Walter White on his 50th birthday. He's teaching high school chemistry to bored students, working a second job at a car wash where students mock him, and living in a modest home. Despite being a brilliant chemist who co-founded Gray Matter Technologies, he's now struggling financially with a pregnant wife and a son with cerebral palsy.",
+                insight: "Vince Gilligan uses 20 minutes to make us feel Walter's mundane, emasculated existence. We need to understand how small his life is before we can appreciate his transformation.",
+                emotion: 3,
+                timestamp: 0
             },
-            'three-act': {
-                'inception': `
-                    <div class="example-content">
-                        <h4>Inception</h4>
-                        <p><strong>Act I: Setup</strong></p>
-                        <p><span class="stage-highlight">Exposition:</span> Cobb is a skilled extractor who steals secrets from dreams. He's haunted by his dead wife Mal and desperately wants to return home to his children.</p>
-                        <p><span class="stage-highlight">Inciting Incident:</span> Saito offers Cobb a chance to go home if he performs inception—planting an idea rather than stealing one.</p>
-                        <p><span class="stage-highlight">Plot Point 1:</span> Cobb accepts the impossible mission and assembles his team of specialists.</p>
-                        <p><strong>Act II: Confrontation</strong></p>
-                        <p><span class="stage-highlight">Rising Action:</span> The team researches Fischer, plans the three-layer dream architecture, and begins the mission.</p>
-                        <p><span class="stage-highlight">Midpoint:</span> They enter the dream, but Mal appears and sabotages the mission. Time is running out.</p>
-                        <p><span class="stage-highlight">Crisis:</span> Saito is fatally wounded. The team must go deeper into limbo. Fischer's subconscious attacks become more violent.</p>
-                        <p><strong>Act III: Resolution</strong></p>
-                        <p><span class="stage-highlight">Climax:</span> Cobb confronts Mal in limbo and lets her go. Fischer opens his father's safe and finds the inception idea.</p>
-                        <p><span class="stage-highlight">Falling Action:</span> The synchronized kicks through each dream layer bring them back to reality.</p>
-                        <p><span class="stage-highlight">Denouement:</span> Cobb returns home to his children. The spinning top wobbles—leaving the ending ambiguous.</p>
-                    </div>
-                `,
-                'gladiator': `
-                    <div class="example-content">
-                        <h4>Gladiator</h4>
-                        <p><strong>Act I: Setup</strong></p>
-                        <p><span class="stage-highlight">Exposition:</span> Maximus is a great general and favorite of Emperor Marcus Aurelius, who wants him to restore the Republic.</p>
-                        <p><span class="stage-highlight">Inciting Incident:</span> Commodus murders his father when he learns Marcus Aurelius chose Maximus, then orders Maximus and his family killed.</p>
-                        <p><span class="stage-highlight">Plot Point 1:</span> Maximus escapes execution but arrives home to find his wife and son murdered. He collapses and is sold into slavery.</p>
-                        <p><strong>Act II: Confrontation</strong></p>
-                        <p><span class="stage-highlight">Rising Action:</span> Maximus becomes a gladiator, fighting and winning in provincial arenas to build his fame.</p>
-                        <p><span class="stage-highlight">Midpoint:</span> "My name is Maximus Decimus Meridius..." — Maximus reveals his identity to Commodus in the Colosseum.</p>
-                        <p><span class="stage-highlight">Crisis:</span> Commodus threatens Lucilla's son and stabs Maximus before the final arena battle, gravely wounding him.</p>
-                        <p><strong>Act III: Resolution</strong></p>
-                        <p><span class="stage-highlight">Climax:</span> Despite his mortal wound, Maximus defeats Commodus in single combat before the Roman crowd.</p>
-                        <p><span class="stage-highlight">Falling Action:</span> Maximus dies but ensures his final command—to restore the Republic—will be carried out.</p>
-                        <p><span class="stage-highlight">Denouement:</span> Maximus is honored as a hero. His vision shows him reuniting with his family in the afterlife.</p>
-                    </div>
-                `
+            {
+                stage: "Call to Adventure",
+                title: "Cancer Diagnosis: Everything Changes",
+                description: "Walter collapses during his car wash shift. At the doctor's office, he learns he has Stage 3A lung cancer. The doctor's words fade to silence as Walter processes that he's dying. That same day, on a ride-along with his DEA brother-in-law Hank, Walter sees his former student Jesse Pinkman fleeing a meth lab raid.",
+                insight: "The call is double: death forces him to act, and seeing Jesse gives him the means. Notice how these happen in the same episode—the call must be urgent and immediate.",
+                emotion: 6,
+                timestamp: 8
             },
-            'freytag': {
-                'romeo-juliet': `
-                    <div class="example-content">
-                        <h4>Romeo and Juliet</h4>
-                        <p><span class="stage-highlight">Exposition:</span> The ancient feud between the Montague and Capulet families is established. Romeo is introduced pining for Rosaline.</p>
-                        <p><span class="stage-highlight">Rising Action:</span> Romeo crashes the Capulet ball and meets Juliet—instant love. They marry secretly. Tybalt kills Mercutio; Romeo kills Tybalt in revenge and is banished.</p>
-                        <p><span class="stage-highlight">Climax:</span> Juliet drinks the sleeping potion to fake her death. The crucial message explaining the plan fails to reach Romeo—he believes she's truly dead.</p>
-                        <p><span class="stage-highlight">Falling Action:</span> Romeo, devastated, buys poison. He goes to Juliet's tomb, encounters Paris, kills him, then drinks poison and dies beside Juliet.</p>
-                        <p><span class="stage-highlight">Denouement:</span> Juliet awakens, finds Romeo dead, and kills herself. The families discover their children's bodies and reconcile, ending their ancient feud.</p>
-                    </div>
-                `,
-                'hamlet': `
-                    <div class="example-content">
-                        <h4>Hamlet</h4>
-                        <p><span class="stage-highlight">Exposition:</span> King Hamlet is dead. Claudius has married Gertrude and taken the throne. A ghost appears on the battlements.</p>
-                        <p><span class="stage-highlight">Rising Action:</span> The ghost tells Hamlet that Claudius murdered him. Hamlet feigns madness. He stages "The Mousetrap" play. Hamlet kills Polonius. Ophelia descends into madness.</p>
-                        <p><span class="stage-highlight">Climax:</span> Hamlet is sent to England but escapes and returns. Ophelia drowns herself. The path to tragedy is now inevitable.</p>
-                        <p><span class="stage-highlight">Falling Action:</span> Hamlet encounters Laertes at Ophelia's funeral. Claudius and Laertes plot to kill Hamlet using a poisoned sword in a staged duel.</p>
-                        <p><span class="stage-highlight">Denouement:</span> During the duel, Laertes wounds Hamlet with the poisoned blade. Gertrude drinks poisoned wine and dies. Hamlet wounds Laertes and forces Claudius to drink poison. Hamlet and Laertes die. Fortinbras takes the throne.</p>
-                    </div>
-                `
+            {
+                stage: "Refusal of Call",
+                title: "\"I Have a Family to Think About\"",
+                description: "Despite the cancer, Walter initially plans to just accept his fate. He lies to his family about the severity, refuses aggressive treatment, and tries to continue his normal life. Even when Jesse shows up at his house, Walter initially refuses the meth cooking idea, saying he has responsibilities.",
+                insight: "This refusal is brief but crucial. It shows Walter isn't desperate or crazy—he's a rational man making a rational (if terrible) choice. This makes his eventual decision more powerful.",
+                emotion: 5,
+                timestamp: 17
             },
-            'story-circle': {
-                'rick-morty': `
-                    <div class="example-content">
-                        <h4>Rick and Morty: "Pickle Rick"</h4>
-                        <p><span class="stage-highlight">1. You:</span> Rick is in his comfort zone in the garage, doing whatever he wants without accountability.</p>
-                        <p><span class="stage-highlight">2. Need:</span> Rick wants to avoid family therapy at all costs—he sees it as beneath him.</p>
-                        <p><span class="stage-highlight">3. Go:</span> Rick turns himself into a pickle as an elaborate excuse to skip therapy.</p>
-                        <p><span class="stage-highlight">4. Search:</span> Pickle Rick must survive in the sewers, fighting rats and building an exoskeleton from their parts.</p>
-                        <p><span class="stage-highlight">5. Find:</span> Rick becomes an action hero, infiltrating a foreign embassy and defeating armed guards.</p>
-                        <p><span class="stage-highlight">6. Take:</span> Rick nearly dies multiple times, is covered in filth and gore, and suffers greatly for his stubbornness.</p>
-                        <p><span class="stage-highlight">7. Return:</span> Rick arrives at therapy still as a pickle, gets turned back to human form.</p>
-                        <p><span class="stage-highlight">8. Change:</span> Rick hasn't changed—he refuses to acknowledge that therapy could help.</p>
-                    </div>
-                `,
-                'community': `
-                    <div class="example-content">
-                        <h4>Community: "Remedial Chaos Theory"</h4>
-                        <p><span class="stage-highlight">1. You:</span> The study group is in their comfort zone at Troy and Abed's housewarming party.</p>
-                        <p><span class="stage-highlight">2. Need:</span> Someone needs to go downstairs to get the pizza delivery.</p>
-                        <p><span class="stage-highlight">3. Go:</span> Each timeline explores what happens when a different person leaves the room.</p>
-                        <p><span class="stage-highlight">4. Search:</span> Each timeline reveals different group dynamics—who causes conflict, who prevents it.</p>
-                        <p><span class="stage-highlight">5. Find:</span> The revelation that Jeff is the real problem—he keeps rolling dice to manipulate who goes.</p>
-                        <p><span class="stage-highlight">6. Take:</span> The "darkest timeline" where everything goes catastrophically wrong—fire, injury, and trauma.</p>
-                        <p><span class="stage-highlight">7. Return:</span> We return to the "prime" timeline where Jeff actually goes to get the pizza himself.</p>
-                        <p><span class="stage-highlight">8. Change:</span> When Jeff takes responsibility instead of manipulating others, the group is genuinely happy together.</p>
-                    </div>
-                `
+            {
+                stage: "Meeting the Mentor",
+                title: "Jesse Pinkman: The Unlikely Guide",
+                description: "Ironically, Walter's mentor into the criminal underworld is his former student Jesse Pinkman. Jesse teaches Walter the drug business, connects him to distributors, and shows him the ropes of cooking meth. Walter brings the chemistry genius; Jesse brings the street knowledge.",
+                insight: "The 'mentor' doesn't have to be wise or good. Jesse is chaotic, unreliable, and incompetent—but he's essential. This subverts the traditional mentor role brilliantly.",
+                emotion: 4,
+                timestamp: 25
+            },
+            {
+                stage: "Crossing the Threshold",
+                title: "The First Cook: No Going Back",
+                description: "Walter and Jesse cook their first batch of meth in a stolen RV in the desert. When Krazy-8 and Emilio discover Walter's identity, a violent confrontation leads to Walter using phosphine gas to kill them. He's now directly responsible for two deaths. Walter White has crossed into the criminal world—there's no going back.",
+                insight: "The threshold must be irreversible. Walter can't un-kill these men. This is the point of no return. Every hero's journey needs this moment of commitment.",
+                emotion: 8,
+                timestamp: 33
+            },
+            {
+                stage: "Tests, Allies, and Enemies",
+                title: "Building the Empire, Making Enemies",
+                description: "Walter must dispose of bodies, lie to his family, deal with Tuco Salamanca, and balance his double life. He forms an uneasy partnership with Jesse, gains a lawyer (Saul), and starts laundering money. Meanwhile, Hank investigates Heisenberg, getting closer. Each episode brings new complications.",
+                insight: "Act 2 is the longest section. You need multiple tests, escalating stakes, and new complications. The middle sags if you don't keep raising the pressure.",
+                emotion: 7,
+                timestamp: 42
+            },
+            {
+                stage: "Approach to Inmost Cave",
+                title: "Confronting Tuco: Preparing for War",
+                description: "Walter and Jesse must deal with the violent, unstable Tuco Salamanca who beats Jesse and holds them captive. Walter realizes the drug business is more dangerous than he imagined. This is his approach to the heart of darkness—understanding that he's in a world of real violence and death.",
+                insight: "The 'inmost cave' is psychological. It's Walter confronting the reality of what he's become and what this world demands.",
+                emotion: 9,
+                timestamp: 58
+            },
+            {
+                stage: "The Ordeal",
+                title: "Killing Krazy-8: Becoming a Murderer",
+                description: "Walter holds Krazy-8 prisoner in Jesse's basement. He creates a pros/cons list about killing him, trying to convince himself to let him go. But when he brings food down, he realizes Krazy-8 has fashioned a weapon from a broken plate. Walter strangles him with a bike lock, crying as he does it. This is Walter's death and rebirth—he's killed with his own hands, looked a man in the eyes as he died.",
+                insight: "This is the emotional and moral low point. Walter crosses the line from accidental killer to murderer. The ordeal must fundamentally break and rebuild the character.",
+                emotion: 10,
+                timestamp: 67
+            },
+            {
+                stage: "Reward (Seizing the Sword)",
+                title: "Becoming Heisenberg",
+                description: "After surviving Tuco, Walter embraces his new identity. He's no longer the timid teacher—he's Heisenberg, a name that commands fear and respect in the drug world. He's gained confidence, money, and power. The meek chemistry teacher has become a drug lord.",
+                insight: "The reward isn't always good. Walter gets what he wanted—power and respect—but at the cost of his humanity. The sword he seizes is poisoned.",
+                emotion: 8,
+                timestamp: 75
+            },
+            {
+                stage: "The Road Back",
+                title: "Family Discovers the Truth",
+                description: "Skyler becomes suspicious. She separates from Walter, threatening to expose him. Hank's investigation gets closer. Walter tries to maintain his double life, but the walls are closing in. He must choose between his family and his empire.",
+                insight: "The road back is rarely smooth. The hero must face the consequences of their journey and decide what they're willing to sacrifice.",
+                emotion: 7,
+                timestamp: 83
+            },
+            {
+                stage: "Resurrection",
+                title: "\"I Am the Danger\"",
+                description: "When Skyler asks if he's in danger, Walter delivers his famous monologue: 'I am not in danger, Skyler. I am the danger. A guy opens his door and gets shot, and you think that of me? No. I am the one who knocks.' Walter fully embraces who he's become. This is his final transformation—no longer split between Walter and Heisenberg, he's chosen his identity.",
+                insight: "The resurrection is the final test where the hero uses everything they've learned. Walter doesn't just survive—he declares who he is.",
+                emotion: 9,
+                timestamp: 92
+            },
+            {
+                stage: "Return with Elixir",
+                title: "The Transformed Man",
+                description: "By season's end, Walter has money, power, and a criminal empire—but he's lost his family, his morality, and his soul. He's returned from the underworld, but instead of bringing wisdom or healing, he's brought poison. He's completed the hero's journey, but become the villain.",
+                insight: "Breaking Bad subverts the hero's journey by having Walter transform into evil. The structure works the same, but the moral direction is inverted. This is genius storytelling.",
+                emotion: 6,
+                timestamp: 100
             }
-        };
+        ];
 
-        function showExample(framework, example) {
-            const contentDiv = document.getElementById(`${framework}-example-content`);
-            if (examples[framework] && examples[framework][example]) {
-                contentDiv.innerHTML = examples[framework][example];
+        let currentBeat = 0;
+        let isPlaying = false;
+        let playInterval;
+
+        // Initialize timeline
+        function initTimeline() {
+            const markers = document.getElementById('markers');
+            const progressDots = document.getElementById('progressDots');
+
+            breakingBadBeats.forEach((beat, index) => {
+                // Create marker
+                const marker = document.createElement('div');
+                marker.className = 'timeline-marker';
+                marker.style.left = `${beat.timestamp}%`;
+                marker.onclick = () => goToBeat(index);
+                markers.appendChild(marker);
+
+                // Create progress dot
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                progressDots.appendChild(dot);
+            });
+
+            updateBeatDisplay();
+            drawEmotionalArc();
+        }
+
+        function goToBeat(index) {
+            currentBeat = index;
+            updateBeatDisplay();
+        }
+
+        function nextBeat() {
+            if (currentBeat < breakingBadBeats.length - 1) {
+                currentBeat++;
+                updateBeatDisplay();
             }
         }
 
-        function switchFramework(frameworkId) {
-            document.querySelectorAll('.framework-btn').forEach(btn => btn.classList.remove('active'));
+        function previousBeat() {
+            if (currentBeat > 0) {
+                currentBeat--;
+                updateBeatDisplay();
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = isPlaying ? '⏸' : '▶';
+
+            if (isPlaying) {
+                playInterval = setInterval(() => {
+                    if (currentBeat < breakingBadBeats.length - 1) {
+                        nextBeat();
+                    } else {
+                        togglePlay();
+                    }
+                }, 3000);
+            } else {
+                clearInterval(playInterval);
+            }
+        }
+
+        function seekTimeline(event) {
+            const track = document.getElementById('timeline');
+            const rect = track.getBoundingClientRect();
+            const percent = ((event.clientX - rect.left) / rect.width) * 100;
+
+            // Find closest beat
+            let closestIndex = 0;
+            let closestDiff = Math.abs(breakingBadBeats[0].timestamp - percent);
+
+            breakingBadBeats.forEach((beat, index) => {
+                const diff = Math.abs(beat.timestamp - percent);
+                if (diff < closestDiff) {
+                    closestDiff = diff;
+                    closestIndex = index;
+                }
+            });
+
+            goToBeat(closestIndex);
+        }
+
+        function updateBeatDisplay() {
+            const beat = breakingBadBeats[currentBeat];
+            const display = document.getElementById('beatDisplay');
+
+            display.innerHTML = `
+                <div class="beat-number">Beat ${currentBeat + 1}/12 • ${beat.stage}</div>
+                <div class="beat-title">${beat.title}</div>
+                <div class="beat-description">${beat.description}</div>
+                <div class="beat-insight">
+                    <div class="beat-insight-title">💡 Why This Works</div>
+                    <div class="beat-insight-text">${beat.insight}</div>
+                </div>
+            `;
+
+            // Update progress bar
+            document.getElementById('progress').style.width = `${beat.timestamp}%`;
+            document.getElementById('scrubber').style.left = `${beat.timestamp}%`;
+
+            // Update markers
+            document.querySelectorAll('.timeline-marker').forEach((marker, index) => {
+                marker.classList.toggle('active', index === currentBeat);
+            });
+
+            // Update progress dots
+            document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentBeat);
+            });
+
+            // Update emotional arc
+            drawEmotionalArc();
+        }
+
+        // Draw emotional arc
+        function drawEmotionalArc() {
+            const canvas = document.getElementById('arcCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = canvas.offsetHeight;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, (height / 10) * i);
+                ctx.lineTo(width, (height / 10) * i);
+                ctx.stroke();
+            }
+
+            // Draw arc
+            ctx.beginPath();
+            ctx.strokeStyle = '#007aff';
+            ctx.lineWidth = 3;
+            ctx.lineJoin = 'round';
+
+            breakingBadBeats.forEach((beat, index) => {
+                const x = (width / (breakingBadBeats.length - 1)) * index;
+                const y = height - (height / 10) * beat.emotion;
+
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Highlight current beat
+            const currentX = (width / (breakingBadBeats.length - 1)) * currentBeat;
+            const currentY = height - (height / 10) * breakingBadBeats[currentBeat].emotion;
+
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#007aff';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(0, 122, 255, 0.3)';
+            ctx.lineWidth = 6;
+            ctx.stroke();
+        }
+
+        // Framework navigation
+        function showFramework(id) {
+            document.querySelectorAll('.framework-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Mode switcher
+        function setMode(mode) {
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             event.target.classList.add('active');
 
-            document.querySelectorAll('.framework').forEach(fw => fw.classList.remove('active'));
-            document.getElementById(frameworkId).classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Could show/hide expert content based on mode
+            console.log('Mode:', mode);
         }
 
+        // Story analyzer
+        function analyzeStory() {
+            const input = document.getElementById('storyInput').value;
+            const results = document.getElementById('analyzerResults');
+
+            if (!input.trim()) {
+                alert('Please paste your story outline first!');
+                return;
+            }
+
+            results.style.display = 'block';
+            results.innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">Structure Detected</div>
+                    <div class="result-text">Your story appears to follow a <strong>Three-Act Structure</strong> with clear setup, confrontation, and resolution.</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Character Arc</div>
+                    <div class="result-text">Strong transformation: Sarah goes from corporate lawyer → whistleblower → independent advocate. Clear change visible.</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Potential Issues</div>
+                    <div class="result-text">⚠️ Act II might need more complications. Consider adding a "all is lost" moment before the final evidence discovery.</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Suggestions</div>
+                    <div class="result-text">✓ Add a midpoint reversal around 50%<br>✓ Make the stakes more personal (family member affected?)<br>✓ Consider a mentor figure who guides her legal strategy</div>
+                </div>
+            `;
+        }
+
+        // Template copy
+        function copyTemplate(type) {
+            const template = document.getElementById('heroTemplate').textContent;
+            navigator.clipboard.writeText(template).then(() => {
+                alert('Template copied to clipboard!');
+            });
+        }
+
+        // Framework comparison
+        function selectComparison(framework) {
+            document.querySelectorAll('.comparison-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const display = document.getElementById('comparisonDisplay');
+            const comparisons = {
+                'hero': `
+                    <h3 style="margin-bottom: 16px;">The Matrix as Hero's Journey</h3>
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px;">
+                        <ol style="line-height: 2; color: var(--text-secondary);">
+                            <li><strong>Ordinary World:</strong> Neo as Thomas Anderson, programmer</li>
+                            <li><strong>Call to Adventure:</strong> "Follow the white rabbit," Trinity contact</li>
+                            <li><strong>Refusal:</strong> Almost doesn't go out on ledge to escape agents</li>
+                            <li><strong>Meeting Mentor:</strong> Morpheus offers red/blue pill choice</li>
+                            <li><strong>Crossing Threshold:</strong> Takes red pill, wakes up in real world</li>
+                            <li><strong>Tests/Allies/Enemies:</strong> Training, Oracle, learning about Matrix</li>
+                            <li><strong>Approach:</strong> Plan to rescue Morpheus from agents</li>
+                            <li><strong>Ordeal:</strong> Neo shot by Agent Smith, appears dead</li>
+                            <li><strong>Reward:</strong> Resurrects as The One, can see code</li>
+                            <li><strong>Road Back:</strong> Must escape through phone before agents arrive</li>
+                            <li><strong>Resurrection:</strong> Fully accepts role as The One</li>
+                            <li><strong>Return with Elixir:</strong> Power to free humanity, makes promise call</li>
+                        </ol>
+                    </div>
+                `,
+                'three-act': `
+                    <h3 style="margin-bottom: 16px;">The Matrix as Three-Act Structure</h3>
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px;">
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="color: var(--success); margin-bottom: 8px;">Act I: Setup (0-34 min)</h4>
+                            <p style="color: var(--text-secondary);">Neo's double life, meeting Trinity and Morpheus, the choice, red pill, awakening to reality</p>
+                            <p style="margin-top: 8px;"><strong>Plot Point 1 (~25%):</strong> Takes red pill - point of no return</p>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="color: var(--warning); margin-bottom: 8px;">Act II: Confrontation (34-102 min)</h4>
+                            <p style="color: var(--text-secondary);">Training montage, Oracle scene, Cypher's betrayal, Morpheus captured, Neo chooses to save him</p>
+                            <p style="margin-top: 8px;"><strong>Midpoint (~50%):</strong> Oracle tells Neo he's not The One</p>
+                            <p style="margin-top: 8px;"><strong>Plot Point 2 (~75%):</strong> Neo shot and killed by Agent Smith</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--accent); margin-bottom: 8px;">Act III: Resolution (102-136 min)</h4>
+                            <p style="color: var(--text-secondary);">Trinity's kiss, resurrection, becoming The One, defeating Smith, promise to free everyone</p>
+                        </div>
+                    </div>
+                `,
+                'save-cat': `
+                    <h3 style="margin-bottom: 16px;">The Matrix as Save the Cat</h3>
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;"><em>Blake Snyder's 15-beat structure:</em></p>
+                        <ol style="line-height: 2; color: var(--text-secondary); font-size: 15px;">
+                            <li><strong>Opening Image:</strong> Neo asleep at computer, living double life</li>
+                            <li><strong>Theme Stated:</strong> "You're looking for something" / "What is the Matrix?"</li>
+                            <li><strong>Setup:</strong> Neo's mundane life as programmer, feeling something's wrong</li>
+                            <li><strong>Catalyst:</strong> Message on computer: "Follow the white rabbit"</li>
+                            <li><strong>Debate:</strong> Should he trust Trinity? Take the meeting with Morpheus?</li>
+                            <li><strong>Break into Two:</strong> Takes the red pill</li>
+                            <li><strong>B Story:</strong> Neo and Trinity's relationship / Neo and Morpheus mentorship</li>
+                            <li><strong>Fun and Games:</strong> Training montages, learning to bend rules, "I know kung fu"</li>
+                            <li><strong>Midpoint:</strong> Oracle says he's NOT The One (false defeat)</li>
+                            <li><strong>Bad Guys Close In:</strong> Cypher's betrayal, Morpheus captured</li>
+                            <li><strong>All Is Lost:</strong> Neo shot by Agent Smith, dies</li>
+                            <li><strong>Dark Night of Soul:</strong> Trinity's speech over Neo's body</li>
+                            <li><strong>Break into Three:</strong> Neo resurrects, becomes The One</li>
+                            <li><strong>Finale:</strong> Defeats Agent Smith, escapes, makes promise call</li>
+                            <li><strong>Final Image:</strong> Neo flying - mirrors opening (trapped → free)</li>
+                        </ol>
+                    </div>
+                `,
+                'story-circle': `
+                    <h3 style="margin-bottom: 16px;">The Matrix as Story Circle</h3>
+                    <div style="background: var(--bg-elevated); padding: 24px; border-radius: 12px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;"><em>Dan Harmon's simplified Hero's Journey:</em></p>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>1. You</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Neo in comfort zone (Matrix, programmer life)</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>2. Need</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Wants to know "What is the Matrix?"</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>3. Go</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Takes red pill, enters real world (unfamiliar)</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>4. Search</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Adapts through training, learns the rules</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>5. Find</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Gets what he wanted (truth about reality)</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>6. Take</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Pays price (shot and dies)</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>7. Return</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Comes back to Matrix world</p>
+                            </div>
+                            <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+                                <strong>8. Change</strong>
+                                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Transformed into The One, can manipulate Matrix</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            };
+
+            display.innerHTML = comparisons[framework];
+        }
+
+        // Initialize on load
         window.addEventListener('load', () => {
-            positionJourneyStages();
-            positionCircleStages();
+            initTimeline();
         });
 
+        // Resize handler
         window.addEventListener('resize', () => {
-            positionJourneyStages();
-            positionCircleStages();
+            drawEmotionalArc();
         });
     </script>
 </body>
