@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master STP Marketing Strategy</title>
+    <title>STP Marketing - Interactive Experience</title>
     <style>
         * {
             margin: 0;
@@ -12,1472 +12,1065 @@
         }
 
         :root {
-            --bg: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-elevated: #f5f5f5;
-            --text: #1a1a1a;
-            --text-secondary: #6b6b6b;
-            --text-tertiary: #9b9b9b;
+            --bg: #000000;
+            --text: #ffffff;
             --accent: #007aff;
-            --accent-hover: #0051d5;
-            --success: #34c759;
-            --warning: #ff9500;
-            --danger: #ff3b30;
-            --purple: #af52de;
+            --purple: #bf5af2;
             --pink: #ff2d55;
-            --border: #e8e8e8;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg: 0 12px 24px rgba(0,0,0,0.1);
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
+            --orange: #ff9500;
+            --green: #30d158;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: var(--bg-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: default;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 24px;
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Header */
-        header {
+        .hero-content {
             text-align: center;
-            margin-bottom: 60px;
+            z-index: 2;
         }
 
-        h1 {
-            font-size: clamp(36px, 5vw, 64px);
+        .hero h1 {
+            font-size: clamp(48px, 10vw, 120px);
             font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, #007aff 0%, #af52de 100%);
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #007aff 0%, #bf5af2 50%, #ff2d55 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .subtitle {
-            font-size: clamp(16px, 2vw, 20px);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 32px;
-        }
-
-        /* Navigation */
-        .nav-tabs {
-            display: flex;
-            gap: 8px;
-            background: var(--bg);
-            padding: 6px;
-            border-radius: var(--radius-md);
-            margin-bottom: 40px;
-            overflow-x: auto;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-tab {
-            padding: 10px 20px;
-            background: transparent;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .nav-tab:hover {
-            background: var(--bg-elevated);
-            color: var(--text);
-        }
-
-        .nav-tab.active {
-            background: var(--text);
-            color: white;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg);
-            border-radius: var(--radius-lg);
-            padding: 40px;
             margin-bottom: 24px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            animation: fadeInUp 1s ease-out;
         }
 
-        .card-title {
-            font-size: clamp(24px, 3vw, 36px);
-            font-weight: 700;
-            margin-bottom: 12px;
+        .hero-subtitle {
+            font-size: clamp(20px, 3vw, 32px);
+            color: rgba(255,255,255,0.6);
+            animation: fadeInUp 1s ease-out 0.2s both;
         }
 
-        .card-description {
-            font-size: 17px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 32px;
-        }
-
-        /* Section Content */
-        .section-content {
-            display: none;
-        }
-
-        .section-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Interactive Segmentation Grid */
-        .segment-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin: 32px 0;
-        }
-
-        .segment-card {
-            background: var(--bg-elevated);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .segment-card::before {
-            content: '';
+        .scroll-indicator {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--purple));
-            transform: scaleX(0);
-            transition: transform 0.3s;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            font-size: 32px;
+            opacity: 0.5;
         }
 
-        .segment-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .segment-card:hover::before {
-            transform: scaleX(1);
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, 10px); }
         }
 
-        .segment-card.active {
+        /* Animated background */
+        .bg-gradient {
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(191, 90, 242, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 90%, rgba(255, 45, 85, 0.15) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Section */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 6vw, 72px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        /* Interactive Game: Drag & Drop Segmentation */
+        .game-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .game-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .customers-pool {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .customer-card {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(191, 90, 242, 0.2));
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            user-select: none;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 122, 255, 0.3);
             border-color: var(--accent);
-            background: var(--bg);
-            box-shadow: var(--shadow-md);
         }
 
-        .segment-card.active::before {
-            transform: scaleX(1);
+        .customer-card:active {
+            cursor: grabbing;
+        }
+
+        .customer-emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .customer-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .customer-trait {
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .segments-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .segment-drop-zone {
+            background: rgba(255,255,255,0.03);
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 32px 24px;
+            min-height: 250px;
+            transition: all 0.3s;
+        }
+
+        .segment-drop-zone.drag-over {
+            background: rgba(0, 122, 255, 0.1);
+            border-color: var(--accent);
+            border-style: solid;
+            transform: scale(1.02);
+        }
+
+        .segment-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .segment-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 28px;
         }
 
-        .segment-title {
-            font-size: 18px;
+        .segment-customers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .segment-customers .customer-card {
+            background: rgba(0, 122, 255, 0.15);
+            cursor: move;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 24px;
             font-weight: 600;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(191, 90, 242, 0.2));
+            border-radius: 16px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Market Simulator */
+        .simulator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .control-group {
+            background: rgba(255,255,255,0.03);
+            padding: 24px;
+            border-radius: 16px;
+        }
+
+        .control-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-container {
+            margin-top: 16px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+        }
+
+        .value-display {
+            margin-top: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Results Chart */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(191, 90, 242, 0.1));
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.3);
+        }
+
+        .result-label {
+            font-size: 14px;
+            opacity: 0.6;
             margin-bottom: 8px;
         }
 
-        .segment-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
+        .result-value {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* Positioning Map */
-        .positioning-map {
-            position: relative;
+        .result-change {
+            font-size: 16px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .result-change.positive {
+            color: var(--green);
+        }
+
+        .result-change.negative {
+            color: var(--pink);
+        }
+
+        /* Positioning Game: Visual Map */
+        .positioning-canvas {
             width: 100%;
-            height: 500px;
-            background: var(--bg-elevated);
-            border-radius: var(--radius-lg);
-            margin: 32px 0;
+            height: 600px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
+            position: relative;
             overflow: hidden;
-        }
-
-        .map-axes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .axis {
             position: absolute;
-            background: var(--border);
+            background: rgba(255,255,255,0.1);
         }
 
-        .axis-x {
+        .axis-horizontal {
             left: 0;
             right: 0;
             top: 50%;
-            height: 2px;
+            height: 1px;
         }
 
-        .axis-y {
+        .axis-vertical {
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 2px;
+            width: 1px;
         }
 
         .axis-label {
             position: absolute;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--text-tertiary);
-            background: var(--bg-elevated);
-            padding: 4px 8px;
+            opacity: 0.5;
+            background: rgba(0,0,0,0.8);
+            padding: 8px 16px;
+            border-radius: 8px;
         }
 
-        .label-top { top: 12px; left: 50%; transform: translateX(-50%); }
-        .label-bottom { bottom: 12px; left: 50%; transform: translateX(-50%); }
-        .label-left { left: 12px; top: 50%; transform: translateY(-50%); }
-        .label-right { right: 12px; top: 50%; transform: translateY(-50%); }
+        .label-top { top: 20px; left: 50%; transform: translateX(-50%); }
+        .label-bottom { bottom: 20px; left: 50%; transform: translateX(-50%); }
+        .label-left { left: 20px; top: 50%; transform: translateY(-50%); }
+        .label-right { right: 20px; top: 50%; transform: translateY(-50%); }
 
-        .brand-marker {
+        .brand-piece {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: var(--shadow-sm);
-            border: 3px solid white;
+            cursor: grab;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            border: 3px solid rgba(255,255,255,0.2);
         }
 
-        .brand-marker:hover {
+        .brand-piece:hover {
             transform: scale(1.2);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
             z-index: 10;
         }
 
-        /* Brand Examples */
-        .brand-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
+        .brand-piece:active {
+            cursor: grabbing;
         }
 
-        .brand-card {
-            background: var(--bg);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
+        .brand-logo-emoji {
+            font-size: 32px;
+            margin-bottom: 4px;
         }
 
-        .brand-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+        /* Quiz Cards */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .brand-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .brand-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .brand-name {
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .brand-tagline {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .brand-stp {
-            margin-top: 20px;
-        }
-
-        .stp-item {
-            margin-bottom: 16px;
-        }
-
-        .stp-label {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--accent);
-            margin-bottom: 6px;
-        }
-
-        .stp-value {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Interactive Canvas */
-        .stp-canvas {
-            background: var(--bg-elevated);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            margin: 32px 0;
-        }
-
-        .canvas-section {
+        .quiz-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 32px;
         }
 
-        .canvas-title {
+        .quiz-question {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 16px;
+        }
+
+        .quiz-option {
+            background: rgba(255,255,255,0.03);
+            padding: 24px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(0, 122, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .quiz-option.correct {
+            background: rgba(48, 209, 88, 0.2);
+            border-color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 45, 85, 0.2);
+            border-color: var(--pink);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--purple), var(--pink));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Button */
+        .btn {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: white;
+            padding: 16px 48px;
+            border-radius: 12px;
+            border: none;
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text);
-        }
-
-        .canvas-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 15px;
-            transition: all 0.2s;
-            background: var(--bg);
-        }
-
-        .canvas-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        textarea.canvas-input {
-            min-height: 120px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        .tag-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .tag {
-            padding: 8px 16px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3);
         }
 
-        .tag:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.4);
         }
 
-        .tag.selected {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .canvas-btn {
-            background: var(--accent);
-            color: white;
-            padding: 14px 32px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 24px;
-        }
-
-        .canvas-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* Insight Boxes */
-        .insight-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 32px;
-            border-radius: var(--radius-lg);
-            margin: 32px 0;
-        }
-
-        .insight-box h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-
-        .insight-box p {
-            font-size: 17px;
-            line-height: 1.7;
-            opacity: 0.95;
-        }
-
-        .insight-author {
-            margin-top: 16px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        /* Process Timeline */
-        .process-timeline {
-            position: relative;
-            padding: 40px 0;
-        }
-
-        .timeline-line {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, var(--accent), var(--purple));
-        }
-
-        .timeline-item {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .timeline-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .timeline-content {
-            flex: 1;
-            background: var(--bg);
-            padding: 24px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .timeline-number {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 48px;
-            height: 48px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            box-shadow: 0 0 0 8px var(--bg-secondary);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
+        /* Stats Display */
+        .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
             margin: 32px 0;
         }
 
-        .stat-card {
-            background: var(--bg);
-            padding: 24px;
-            border-radius: var(--radius-md);
+        .stat-item {
             text-align: center;
-            border: 1px solid var(--border);
+            padding: 32px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .stat-value {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: 700;
-            color: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 8px;
         }
 
         .stat-label {
             font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* Exercise */
-        .exercise {
-            background: rgba(52, 199, 89, 0.05);
-            border: 1px solid rgba(52, 199, 89, 0.3);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            margin: 20px 0;
-        }
-
-        .exercise-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--success);
-            margin-bottom: 12px;
-        }
-
-        .exercise-steps {
-            list-style: none;
-            counter-reset: exercise-counter;
-        }
-
-        .exercise-steps li {
-            counter-increment: exercise-counter;
-            padding-left: 32px;
-            position: relative;
-            margin: 12px 0;
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .exercise-steps li::before {
-            content: counter(exercise-counter);
-            position: absolute;
-            left: 0;
-            width: 24px;
-            height: 24px;
-            background: var(--success);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
+            opacity: 0.6;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 40px 16px;
-            }
-
-            .card {
-                padding: 24px;
-            }
-
-            .segment-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .brand-showcase {
-                grid-template-columns: 1fr;
-            }
-
-            .positioning-map {
-                height: 400px;
-            }
-
-            .timeline-line {
-                left: 20px;
-            }
-
-            .timeline-item,
-            .timeline-item:nth-child(even) {
-                flex-direction: row;
-                padding-left: 60px;
-            }
-
-            .timeline-number {
-                left: 20px;
-            }
-
-            .timeline-content {
-                flex: 1;
-            }
+            .hero h1 { font-size: 48px; }
+            .section { padding: 60px 16px; }
+            .game-container, .simulator { padding: 24px; }
+            .customers-pool { grid-template-columns: repeat(2, 1fr); }
+            .positioning-canvas { height: 400px; }
         }
 
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted var(--accent);
-            cursor: help;
+        /* Celebration Effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 1000;
         }
 
-        .comparison-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 12px;
-            margin: 24px 0;
-        }
-
-        .comparison-table th {
-            text-align: left;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            padding: 12px 16px;
-        }
-
-        .comparison-table td {
-            background: var(--bg-elevated);
-            padding: 16px;
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .comparison-table tr td:first-child {
-            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .comparison-table tr td:last-child {
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Master STP Marketing</h1>
-            <p class="subtitle">Learn the strategic framework behind every successful brand—from Apple to Nike. Interactive lessons, real examples, and practical tools.</p>
-        </header>
-
-        <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showSection('overview')">Overview</button>
-            <button class="nav-tab" onclick="showSection('segmentation')">Segmentation</button>
-            <button class="nav-tab" onclick="showSection('targeting')">Targeting</button>
-            <button class="nav-tab" onclick="showSection('positioning')">Positioning</button>
-            <button class="nav-tab" onclick="showSection('examples')">Brand Examples</button>
-            <button class="nav-tab" onclick="showSection('canvas')">Your STP Canvas</button>
-        </nav>
-
-        <!-- Overview Section -->
-        <div id="overview" class="section-content active">
-            <div class="card">
-                <h2 class="card-title">What is STP Marketing?</h2>
-                <p class="card-description">
-                    STP is the strategic foundation of modern marketing. It's how brands identify who to serve, which customers to focus on, and how to stand out. Every successful company—from Apple to Airbnb—uses this framework.
-                </p>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Core Steps</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">80%</div>
-                        <div class="stat-label">Fortune 500 Use STP</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">5x</div>
-                        <div class="stat-label">Better ROI vs. Mass Marketing</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">1950s</div>
-                        <div class="stat-label">Developed by Wendell Smith</div>
-                    </div>
-                </div>
-
-                <div class="process-timeline">
-                    <div class="timeline-line"></div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-number">S</div>
-                        <div class="timeline-content">
-                            <h3 style="font-size: 20px; margin-bottom: 8px;">Segmentation</h3>
-                            <p style="color: var(--text-secondary);">Divide the market into distinct groups of customers with similar needs, characteristics, or behaviors. Think demographics, psychographics, behavior, and geography.</p>
-                            <p style="margin-top: 12px; font-size: 14px; color: var(--accent);"><strong>Example:</strong> Nike segments by sport type (runners, basketball, soccer), skill level (amateur vs. pro), and lifestyle (athleisure)</p>
-                        </div>
-                        <div style="flex: 1;"></div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-number">T</div>
-                        <div style="flex: 1;"></div>
-                        <div class="timeline-content">
-                            <h3 style="font-size: 20px; margin-bottom: 8px;">Targeting</h3>
-                            <p style="color: var(--text-secondary);">Evaluate each segment and decide which ones to pursue. You can't serve everyone. Choose segments where you can win and deliver the most value.</p>
-                            <p style="margin-top: 12px; font-size: 14px; color: var(--accent);"><strong>Example:</strong> Tesla targets environmentally-conscious, tech-savvy, affluent customers who want luxury + sustainability</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-number">P</div>
-                        <div class="timeline-content">
-                            <h3 style="font-size: 20px; margin-bottom: 8px;">Positioning</h3>
-                            <p style="color: var(--text-secondary);">Create a unique place in the customer's mind. How are you different? Why should they choose you over competitors? This becomes your brand identity.</p>
-                            <p style="margin-top: 12px; font-size: 14px; color: var(--accent);"><strong>Example:</strong> Volvo = Safety. Apple = Innovation + Simplicity. Walmart = Low Prices</p>
-                        </div>
-                        <div style="flex: 1;"></div>
-                    </div>
-                </div>
-
-                <div class="insight-box">
-                    <h3>💡 Why STP Changed Everything</h3>
-                    <p>Before STP, companies used "mass marketing"—one message for everyone. In the 1950s, Wendell Smith realized this was wasteful. Different customers want different things. By segmenting markets, targeting specific groups, and positioning uniquely, companies could serve customers better and compete more effectively.</p>
-                    <p style="margin-top: 16px;">Today, with digital marketing and data analytics, STP is more powerful than ever. You can segment with precision, target microscopically, and position dynamically.</p>
-                    <p class="insight-author">— Wendell Smith, Marketing Pioneer</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Segmentation Section -->
-        <div id="segmentation" class="section-content">
-            <div class="card">
-                <h2 class="card-title">Segmentation: Divide to Conquer</h2>
-                <p class="card-description">
-                    Your market is not homogeneous. Customers have different needs, budgets, values, and behaviors. Segmentation identifies meaningful groups you can serve distinctly.
-                </p>
-
-                <h3 style="font-size: 22px; margin: 32px 0 20px;">The Four Types of Segmentation</h3>
-
-                <div class="segment-grid">
-                    <div class="segment-card" onclick="selectSegment('demographic')">
-                        <div class="segment-icon">👥</div>
-                        <div class="segment-title">Demographic</div>
-                        <div class="segment-description">Age, gender, income, education, occupation, family size. The most common and accessible data.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--accent); font-weight: 600;">Examples: Gen Z, High-income professionals, Parents</div>
-                    </div>
-
-                    <div class="segment-card" onclick="selectSegment('geographic')">
-                        <div class="segment-icon">🌍</div>
-                        <div class="segment-title">Geographic</div>
-                        <div class="segment-description">Country, region, city, climate, urban vs. rural. Location shapes needs and preferences.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--accent); font-weight: 600;">Examples: Urban millennials, Coastal cities, Tropical regions</div>
-                    </div>
-
-                    <div class="segment-card" onclick="selectSegment('psychographic')">
-                        <div class="segment-icon">🧠</div>
-                        <div class="segment-title">Psychographic</div>
-                        <div class="segment-description">Lifestyle, values, personality, interests, attitudes. The "why" behind behavior.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--accent); font-weight: 600;">Examples: Eco-conscious, Adventure seekers, Status-driven</div>
-                    </div>
-
-                    <div class="segment-card" onclick="selectSegment('behavioral')">
-                        <div class="segment-icon">📊</div>
-                        <div class="segment-title">Behavioral</div>
-                        <div class="segment-description">Purchase patterns, usage rate, brand loyalty, benefits sought. What people actually do.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--accent); font-weight: 600;">Examples: Heavy users, Price-sensitive, First-time buyers</div>
-                    </div>
-                </div>
-
-                <div id="segmentDetail" style="margin-top: 32px; padding: 24px; background: var(--bg-elevated); border-radius: var(--radius-md); display: none;">
-                    <!-- Segment details will be inserted here -->
-                </div>
-
-                <div class="insight-box" style="margin-top: 40px;">
-                    <h3>🎯 Apple's Segmentation Genius</h3>
-                    <p><strong>Demographic:</strong> Affluent consumers (premium pricing)</p>
-                    <p><strong>Psychographic:</strong> Creative professionals, design-conscious, value simplicity and aesthetics</p>
-                    <p><strong>Behavioral:</strong> Early adopters, high engagement, ecosystem lock-in (iPhone → Mac → iPad)</p>
-                    <p style="margin-top: 16px;">Notice how Apple combines multiple segmentation types. They don't just target "rich people"—they target rich people who value design, creativity, and seamless experiences. This multi-dimensional segmentation creates laser focus.</p>
-                    <p class="insight-author">— Tim Cook, Apple CEO</p>
-                </div>
-
-                <div class="exercise" style="margin-top: 32px;">
-                    <div class="exercise-title">🎯 Practice Exercise: Segment Your Market</div>
-                    <ol class="exercise-steps">
-                        <li>Choose a product or service (your business or one you admire)</li>
-                        <li>List 3-5 distinct customer groups who might buy it</li>
-                        <li>Describe each group using demographic, geographic, psychographic, and behavioral factors</li>
-                        <li>Identify which segments are most attractive (size, growth, profitability)</li>
-                        <li>Notice how each segment might want different features or messaging</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- Targeting Section -->
-        <div id="targeting" class="section-content">
-            <div class="card">
-                <h2 class="card-title">Targeting: Choose Your Battlefield</h2>
-                <p class="card-description">
-                    You've identified segments. Now: which ones should you serve? You can't be everything to everyone. Strategic targeting means choosing where you can win.
-                </p>
-
-                <h3 style="font-size: 22px; margin: 32px 0 20px;">The Four Targeting Strategies</h3>
-
-                <div class="segment-grid">
-                    <div class="segment-card">
-                        <div class="segment-icon">🌐</div>
-                        <div class="segment-title">Undifferentiated (Mass)</div>
-                        <div class="segment-description">Same product/message for everyone. Economies of scale, but no customization.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--warning); font-weight: 600;">Example: Coca-Cola (same formula everywhere)</div>
-                    </div>
-
-                    <div class="segment-card">
-                        <div class="segment-icon">🎯</div>
-                        <div class="segment-title">Differentiated (Multi-Segment)</div>
-                        <div class="segment-description">Different offerings for different segments. More market coverage, higher costs.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--success); font-weight: 600;">Example: Marriott (luxury, business, budget hotels)</div>
-                    </div>
-
-                    <div class="segment-card">
-                        <div class="segment-icon">🔬</div>
-                        <div class="segment-title">Concentrated (Niche)</div>
-                        <div class="segment-description">Focus all resources on one segment. Deep expertise, but higher risk.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--accent); font-weight: 600;">Example: Rolex (luxury watch buyers only)</div>
-                    </div>
-
-                    <div class="segment-card">
-                        <div class="segment-icon">👤</div>
-                        <div class="segment-title">Micromarketing (1-to-1)</div>
-                        <div class="segment-description">Customize for individuals or local markets. Maximum relevance, hard to scale.</div>
-                        <div style="margin-top: 12px; font-size: 13px; color: var(--purple); font-weight: 600;">Example: Netflix (personalized recommendations)</div>
-                    </div>
-                </div>
-
-                <h3 style="font-size: 22px; margin: 40px 0 20px;">How to Evaluate Segments</h3>
-
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>Criteria</th>
-                            <th>What to Look For</th>
-                            <th>Why It Matters</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>📏 Size</td>
-                            <td>Is the segment large enough to be profitable?</td>
-                            <td>Too small = wasted effort. Too large = might not be distinct.</td>
-                        </tr>
-                        <tr>
-                            <td>📈 Growth</td>
-                            <td>Is it growing, stable, or declining?</td>
-                            <td>Growth segments offer future opportunity.</td>
-                        </tr>
-                        <tr>
-                            <td>🎯 Accessibility</td>
-                            <td>Can you reach them effectively?</td>
-                            <td>Need distribution channels and communication paths.</td>
-                        </tr>
-                        <tr>
-                            <td>💰 Profitability</td>
-                            <td>Will serving them be profitable?</td>
-                            <td>High acquisition costs or low margins kill returns.</td>
-                        </tr>
-                        <tr>
-                            <td>🔧 Fit</td>
-                            <td>Does it align with your capabilities and brand?</td>
-                            <td>Play to your strengths. Don't chase mismatches.</td>
-                        </tr>
-                        <tr>
-                            <td>🛡️ Defensibility</td>
-                            <td>Can you build a sustainable competitive advantage?</td>
-                            <td>If competitors can easily copy, margins compress.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="insight-box">
-                    <h3>💡 Tesla's Targeting Evolution</h3>
-                    <p><strong>Phase 1 (Roadster):</strong> Ultra-rich early adopters. Tiny segment, but proved electric could be sexy.</p>
-                    <p><strong>Phase 2 (Model S/X):</strong> Affluent, environmentally-conscious, tech-forward buyers. Niche but growing.</p>
-                    <p><strong>Phase 3 (Model 3/Y):</strong> Upper-middle class. Multi-segment targeting while maintaining premium positioning.</p>
-                    <p style="margin-top: 16px;">Tesla started concentrated (niche) and expanded to differentiated (multi-segment) as they scaled. This is the classic startup playbook: dominate a niche, then expand.</p>
-                    <p class="insight-author">— Elon Musk, Tesla CEO</p>
-                </div>
-
-                <div class="exercise">
-                    <div class="exercise-title">🎯 Practice Exercise: Evaluate Target Segments</div>
-                    <ol class="exercise-steps">
-                        <li>Take the segments you identified in the previous exercise</li>
-                        <li>Rate each segment on the 6 criteria (Size, Growth, Accessibility, Profitability, Fit, Defensibility) from 1-10</li>
-                        <li>Calculate a total score for each segment</li>
-                        <li>Choose your top 1-3 segments to target</li>
-                        <li>Write one paragraph explaining why you chose them</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- Positioning Section -->
-        <div id="positioning" class="section-content">
-            <div class="card">
-                <h2 class="card-title">Positioning: Own a Word in the Mind</h2>
-                <p class="card-description">
-                    Positioning is how customers perceive you relative to competitors. It's the mental real estate you own. When someone says "safety," you think Volvo. "Luxury," you think Rolex. That's positioning.
-                </p>
-
-                <h3 style="font-size: 22px; margin: 32px 0 20px;">Interactive Positioning Map</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">Positioning maps visualize how brands compare on two key dimensions. Click and drag brands to reposition them.</p>
-
-                <div class="positioning-map">
-                    <div class="map-axes">
-                        <div class="axis axis-x"></div>
-                        <div class="axis axis-y"></div>
-                        <div class="axis-label label-top">Premium / Luxury</div>
-                        <div class="axis-label label-bottom">Affordable / Budget</div>
-                        <div class="axis-label label-left">Conservative / Classic</div>
-                        <div class="axis-label label-right">Innovative / Modern</div>
-                    </div>
-
-                    <!-- Brand markers positioned on map -->
-                    <div class="brand-marker" style="left: 75%; top: 15%; background: #000;" title="Apple">
-                        Apple
-                    </div>
-                    <div class="brand-marker" style="left: 25%; top: 20%; background: #0052CC; color: white;" title="Dell">
-                        Dell
-                    </div>
-                    <div class="brand-marker" style="left: 70%; top: 25%; background: #E50914; color: white;" title="Tesla">
-                        Tesla
-                    </div>
-                    <div class="brand-marker" style="left: 40%; top: 70%; background: #FF9900;" title="Amazon">
-                        Amazon
-                    </div>
-                    <div class="brand-marker" style="left: 30%; top: 75%; background: #0071CE; color: white;" title="Walmart">
-                        Walmart
-                    </div>
-                    <div class="brand-marker" style="left: 55%; top: 40%; background: #4285F4; color: white;" title="Google">
-                        Google
-                    </div>
-                    <div class="brand-marker" style="left: 60%; top: 35%; background: #FF2D55; color: white;" title="Nike">
-                        Nike
-                    </div>
-                    <div class="brand-marker" style="left: 35%; top: 30%; background: #00A4E4; color: white;" title="HP">
-                        HP
-                    </div>
-                </div>
-
-                <h3 style="font-size: 22px; margin: 40px 0 20px;">The Positioning Statement Formula</h3>
-
-                <div style="background: var(--bg-elevated); padding: 32px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
-                    <p style="font-size: 17px; line-height: 2; color: var(--text);">
-                        For <strong style="color: var(--accent);">[target customer]</strong> who <strong style="color: var(--accent);">[need/want]</strong>,<br>
-                        <strong style="color: var(--accent);">[Brand name]</strong> is a <strong style="color: var(--accent);">[category]</strong><br>
-                        that <strong style="color: var(--accent);">[point of difference]</strong>.<br>
-                        Unlike <strong style="color: var(--accent);">[competitors]</strong>,<br>
-                        we <strong style="color: var(--accent);">[reason to believe]</strong>.
-                    </p>
-                </div>
-
-                <h3 style="font-size: 20px; margin: 32px 0 16px;">Real Examples:</h3>
-
-                <div style="background: var(--bg); padding: 24px; border-radius: var(--radius-md); margin-bottom: 16px; border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 12px; color: var(--text);">🍎 Apple</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
-                        For <strong>creative professionals and design-conscious consumers</strong> who <strong>value simplicity and premium experiences</strong>,
-                        <strong>Apple</strong> is a <strong>technology company</strong>
-                        that <strong>creates beautifully designed, intuitive products that just work</strong>.
-                        Unlike <strong>PC manufacturers</strong>,
-                        we <strong>control the entire ecosystem from hardware to software</strong>.
-                    </p>
-                </div>
-
-                <div style="background: var(--bg); padding: 24px; border-radius: var(--radius-md); margin-bottom: 16px; border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 12px; color: var(--text);">✔️ Nike</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
-                        For <strong>athletes and active individuals</strong> who <strong>want to perform at their best</strong>,
-                        <strong>Nike</strong> is a <strong>athletic footwear and apparel brand</strong>
-                        that <strong>delivers innovative, performance-enhancing products</strong>.
-                        Unlike <strong>lifestyle brands</strong>,
-                        we <strong>partner with the world's greatest athletes and use cutting-edge technology</strong>.
-                    </p>
-                </div>
-
-                <div style="background: var(--bg); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 12px; color: var(--text);">🚗 Volvo</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
-                        For <strong>safety-conscious families</strong> who <strong>prioritize protection over flashiness</strong>,
-                        <strong>Volvo</strong> is an <strong>automobile manufacturer</strong>
-                        that <strong>builds the safest cars on the road</strong>.
-                        Unlike <strong>luxury brands focused on status</strong>,
-                        we <strong>pioneered the three-point seatbelt and countless safety innovations</strong>.
-                    </p>
-                </div>
-
-                <div class="insight-box" style="margin-top: 40px;">
-                    <h3>🧠 The Laws of Positioning (Al Ries & Jack Trout)</h3>
-                    <p><strong>1. Be First:</strong> It's better to be first in the mind than best. Coca-Cola, Kleenex, Google—they own categories.</p>
-                    <p><strong>2. If You Can't Be First, Create a New Category:</strong> Can't beat Coca-Cola? Red Bull created "energy drinks."</p>
-                    <p><strong>3. Own One Word:</strong> Volvo = Safety. FedEx = Overnight. BMW = Driving. What's your word?</p>
-                    <p><strong>4. The Power of Narrow Focus:</strong> Specialists beat generalists. Domino's: "Pizza delivery in 30 minutes."</p>
-                    <p><strong>5. Repositioning the Competition:</strong> Don't just position yourself—reposition competitors. Avis: "We're #2, so we try harder."</p>
-                    <p class="insight-author">— Al Ries & Jack Trout, "Positioning: The Battle for Your Mind"</p>
-                </div>
-
-                <div class="exercise">
-                    <div class="exercise-title">🎯 Practice Exercise: Write Your Positioning Statement</div>
-                    <ol class="exercise-steps">
-                        <li>Choose a brand (your business or one you're studying)</li>
-                        <li>Fill in the positioning statement template above</li>
-                        <li>Make it specific—avoid generic terms like "quality" or "value"</li>
-                        <li>Identify your ONE word that you want to own in customers' minds</li>
-                        <li>Test it: Can you say it in one sentence? Is it differentiated from competitors?</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- Brand Examples Section -->
-        <div id="examples" class="section-content">
-            <div class="card">
-                <h2 class="card-title">STP in Action: Real Brand Examples</h2>
-                <p class="card-description">
-                    See how world-class brands use STP to dominate their markets. Study these examples to understand how strategy translates to success.
-                </p>
-
-                <div class="brand-showcase">
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">A</div>
-                            <div>
-                                <div class="brand-name">Airbnb</div>
-                                <div class="brand-tagline">"Belong Anywhere"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Millennials seeking authentic experiences, budget travelers, families wanting space, digital nomads needing monthly stays</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Experience-driven travelers (vs. traditional hotel guests) who value local culture and unique stays over standardized service</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Not a hotel—a way to "live like a local." Authentic, unique accommodations that create belonging, not transactions</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: #000; color: white;">N</div>
-                            <div>
-                                <div class="brand-name">Netflix</div>
-                                <div class="brand-tagline">"See What's Next"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Binge watchers, cord-cutters, families, international viewers, niche content fans (anime, documentaries, etc.)</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Micromarketing: personalized content for each user based on viewing history, preferences, and behavior patterns</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Personalized entertainment on-demand. Watch what you want, when you want, with algorithmic recommendations that know you better than you know yourself</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white;">P</div>
-                            <div>
-                                <div class="brand-name">Peloton</div>
-                                <div class="brand-tagline">"Together We Go Far"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Affluent professionals (time-poor), fitness enthusiasts, parents who can't go to gyms, tech-savvy exercisers</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Upper-middle-class individuals willing to pay premium ($2000+ bike + $44/month) for at-home boutique fitness experience</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Not a bike—a connected fitness platform. Studio-quality classes at home with community, gamification, and world-class instructors</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: #FF6B00; color: white;">S</div>
-                            <div>
-                                <div class="brand-name">Spotify</div>
-                                <div class="brand-tagline">"Music for Everyone"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Music lovers, podcast listeners, commuters, workout enthusiasts, free tier users, premium subscribers</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Multi-segment: freemium model serves ad-tolerant users while converting heavy listeners to premium subscriptions</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Personal soundtrack to your life. Algorithmic discovery + massive library + personalized playlists (Discover Weekly changed music discovery)</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: #6772E5; color: white;">S</div>
-                            <div>
-                                <div class="brand-name">Stripe</div>
-                                <div class="brand-tagline">"Payments Infrastructure for the Internet"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Developers, startups, SaaS companies, online marketplaces, platforms needing payment processing</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Developer-first companies and startups that value API simplicity and fast integration over traditional sales relationships</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Not just payment processing—the economic infrastructure of the internet. Seven lines of code to start accepting payments globally</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="brand-card">
-                        <div class="brand-header">
-                            <div class="brand-logo" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">L</div>
-                            <div>
-                                <div class="brand-name">Lululemon</div>
-                                <div class="brand-tagline">"Sweat Life"</div>
-                            </div>
-                        </div>
-                        <div class="brand-stp">
-                            <div class="stp-item">
-                                <div class="stp-label">Segmentation</div>
-                                <div class="stp-value">Yoga enthusiasts, athleisure consumers, health-conscious women 24-45, community-oriented fitness lovers</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Targeting</div>
-                                <div class="stp-value">Affluent, active women who see fitness as lifestyle (not just exercise) and value premium quality + community</div>
-                            </div>
-                            <div class="stp-item">
-                                <div class="stp-label">Positioning</div>
-                                <div class="stp-value">Premium yoga-inspired athletic wear that's both performance-focused and stylish. $100 yoga pants aren't crazy—they're an investment in your practice</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="insight-box">
-                    <h3>🔍 Pattern Recognition: What Winners Do Differently</h3>
-                    <p><strong>1. Hyper-Specific Segmentation:</strong> Notice how none of these brands target "everyone." They find narrow, passionate audiences.</p>
-                    <p><strong>2. Lifestyle, Not Products:</strong> They sell belonging, identity, and transformation—not features.</p>
-                    <p><strong>3. Premium Positioning:</strong> Most charge more and compete on value/experience, not price.</p>
-                    <p><strong>4. Community & Belonging:</strong> Peloton, Lululemon, Airbnb—they build tribes, not customer bases.</p>
-                    <p><strong>5. Tech-Enabled Differentiation:</strong> Algorithms, platforms, data—technology creates defensible positioning.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Canvas Section -->
-        <div id="canvas" class="section-content">
-            <div class="card">
-                <h2 class="card-title">Build Your STP Strategy</h2>
-                <p class="card-description">
-                    Now it's your turn. Use this interactive canvas to develop your STP strategy. Be specific. Generic answers create generic strategies.
-                </p>
-
-                <div class="stp-canvas">
-                    <div class="canvas-section">
-                        <div class="canvas-title">Step 1: Segmentation</div>
-                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">Identify and describe your market segments. Who are the distinct groups of potential customers?</p>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Segment 1 Name</label>
-                        <input type="text" class="canvas-input" id="segment1Name" placeholder="e.g., Tech-Savvy Millennials" style="margin-bottom: 16px;">
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Describe this segment (demographics, psychographics, behaviors)</label>
-                        <textarea class="canvas-input" id="segment1Desc" placeholder="e.g., Age 25-35, urban professionals, early adopters of technology, value convenience and experiences over possessions..."></textarea>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin: 24px 0 8px;">Segment 2 Name</label>
-                        <input type="text" class="canvas-input" id="segment2Name" placeholder="e.g., Budget-Conscious Families" style="margin-bottom: 16px;">
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Describe this segment</label>
-                        <textarea class="canvas-input" id="segment2Desc" placeholder="Describe demographics, psychographics, and behaviors..."></textarea>
-                    </div>
-
-                    <div class="canvas-section">
-                        <div class="canvas-title">Step 2: Targeting</div>
-                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">Which segment(s) will you target? Evaluate based on size, growth, fit, profitability.</p>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 12px;">Select your targeting strategy:</label>
-                        <div class="tag-selector" id="targetingStrategy">
-                            <div class="tag" onclick="toggleTag(this)">Undifferentiated (Mass)</div>
-                            <div class="tag" onclick="toggleTag(this)">Differentiated (Multi-Segment)</div>
-                            <div class="tag" onclick="toggleTag(this)">Concentrated (Niche)</div>
-                            <div class="tag" onclick="toggleTag(this)">Micromarketing</div>
-                        </div>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin: 24px 0 8px;">Primary Target Segment</label>
-                        <input type="text" class="canvas-input" id="targetSegment" placeholder="Which segment will you focus on?" style="margin-bottom: 16px;">
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Why this segment? (Justify your choice)</label>
-                        <textarea class="canvas-input" id="targetRationale" placeholder="Explain why this segment is attractive: size, growth potential, competitive landscape, fit with your capabilities..."></textarea>
-                    </div>
-
-                    <div class="canvas-section">
-                        <div class="canvas-title">Step 3: Positioning</div>
-                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">How will you position your brand in the minds of your target customers?</p>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Your ONE Word</label>
-                        <input type="text" class="canvas-input" id="positioningWord" placeholder="What ONE word do you want to own? (e.g., Safety, Innovation, Convenience)" style="margin-bottom: 16px;">
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">Complete Your Positioning Statement:</label>
-                        <textarea class="canvas-input" id="positioningStatement" placeholder="For [target customer] who [need/want], [Brand] is a [category] that [point of difference]. Unlike [competitors], we [reason to believe]." style="min-height: 150px;"></textarea>
-
-                        <label style="font-size: 14px; font-weight: 600; display: block; margin: 24px 0 8px;">Key Differentiators</label>
-                        <div class="tag-selector" id="differentiators">
-                            <div class="tag" onclick="toggleTag(this)">Premium Quality</div>
-                            <div class="tag" onclick="toggleTag(this)">Low Price</div>
-                            <div class="tag" onclick="toggleTag(this)">Innovation</div>
-                            <div class="tag" onclick="toggleTag(this)">Customer Service</div>
-                            <div class="tag" onclick="toggleTag(this)">Convenience</div>
-                            <div class="tag" onclick="toggleTag(this)">Sustainability</div>
-                            <div class="tag" onclick="toggleTag(this)">Community</div>
-                            <div class="tag" onclick="toggleTag(this)">Personalization</div>
-                        </div>
-                    </div>
-
-                    <button class="canvas-btn" onclick="generateSTPSummary()">📋 Generate My STP Strategy Summary</button>
-
-                    <div id="stpOutput" style="margin-top: 32px; padding: 32px; background: var(--bg); border-radius: var(--radius-md); border: 2px solid var(--accent); display: none;">
-                        <!-- Generated summary will appear here -->
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="bg-gradient"></div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Master STP</h1>
+            <p class="hero-subtitle">Learn marketing strategy by doing, not reading</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Section 1: Segmentation Game -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Who Are Your Customers?</h2>
+            <div class="game-container">
+                <div class="game-title">Drag customers into the right segments</div>
+
+                <div class="customers-pool" id="customersPool">
+                    <div class="customer-card" draggable="true" data-segment="young-tech" data-id="1">
+                        <span class="customer-emoji">👨‍💻</span>
+                        <div class="customer-name">Alex</div>
+                        <div class="customer-trait">Age 24, Developer</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="families" data-id="2">
+                        <span class="customer-emoji">👨‍👩‍👧‍👦</span>
+                        <div class="customer-name">The Johnsons</div>
+                        <div class="customer-trait">Parents of 3</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="luxury" data-id="3">
+                        <span class="customer-emoji">💼</span>
+                        <div class="customer-name">Victoria</div>
+                        <div class="customer-trait">CEO, $500K income</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="young-tech" data-id="4">
+                        <span class="customer-emoji">🎮</span>
+                        <div class="customer-name">Jake</div>
+                        <div class="customer-trait">Age 19, Gamer</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="budget" data-id="5">
+                        <span class="customer-emoji">🎓</span>
+                        <div class="customer-name">Maria</div>
+                        <div class="customer-trait">Student, Part-time</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="luxury" data-id="6">
+                        <span class="customer-emoji">⌚</span>
+                        <div class="customer-name">Richard</div>
+                        <div class="customer-trait">Luxury collector</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="families" data-id="7">
+                        <span class="customer-emoji">🏠</span>
+                        <div class="customer-name">Sarah</div>
+                        <div class="customer-trait">Stay-at-home mom</div>
+                    </div>
+                    <div class="customer-card" draggable="true" data-segment="budget" data-id="8">
+                        <span class="customer-emoji">💰</span>
+                        <div class="customer-name">David</div>
+                        <div class="customer-trait">Price-conscious</div>
+                    </div>
+                </div>
+
+                <div class="segments-area">
+                    <div class="segment-drop-zone" data-segment="young-tech">
+                        <div class="segment-header">
+                            <span class="segment-icon">💻</span>
+                            <span>Young Tech-Savvy</span>
+                        </div>
+                        <div class="segment-customers"></div>
+                    </div>
+
+                    <div class="segment-drop-zone" data-segment="families">
+                        <div class="segment-header">
+                            <span class="segment-icon">👪</span>
+                            <span>Families</span>
+                        </div>
+                        <div class="segment-customers"></div>
+                    </div>
+
+                    <div class="segment-drop-zone" data-segment="luxury">
+                        <div class="segment-header">
+                            <span class="segment-icon">💎</span>
+                            <span>Luxury Seekers</span>
+                        </div>
+                        <div class="segment-customers"></div>
+                    </div>
+
+                    <div class="segment-drop-zone" data-segment="budget">
+                        <div class="segment-header">
+                            <span class="segment-icon">🏷️</span>
+                            <span>Budget-Conscious</span>
+                        </div>
+                        <div class="segment-customers"></div>
+                    </div>
+                </div>
+
+                <div class="score-display" id="scoreDisplay"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Live Market Simulator -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">See Your Strategy in Action</h2>
+            <div class="simulator">
+                <div class="control-panel">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>🎯</span>
+                            <span>Target Audience Size</span>
+                        </div>
+                        <input type="range" class="slider" id="audienceSize" min="10" max="100" value="50">
+                        <div class="value-display"><span id="audienceValue">50</span>M</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>💰</span>
+                            <span>Premium Positioning</span>
+                        </div>
+                        <input type="range" class="slider" id="pricing" min="1" max="10" value="5">
+                        <div class="value-display">$<span id="pricingValue">5</span>0</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>🎨</span>
+                            <span>Brand Differentiation</span>
+                        </div>
+                        <input type="range" class="slider" id="differentiation" min="1" max="10" value="5">
+                        <div class="value-display"><span id="diffValue">5</span>/10</div>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Revenue</div>
+                        <div class="result-value" id="revenue">$12M</div>
+                        <div class="result-change positive" id="revenueChange">+24%</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Market Share</div>
+                        <div class="result-value" id="marketShare">18%</div>
+                        <div class="result-change positive" id="shareChange">+3%</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Customer LTV</div>
+                        <div class="result-value" id="ltv">$240</div>
+                        <div class="result-change positive" id="ltvChange">+15%</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Competition</div>
+                        <div class="result-value" id="competition">Med</div>
+                        <div class="result-change" id="compChange">Stable</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Positioning Map Game -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Position Your Brand</h2>
+            <div class="game-container">
+                <div class="game-title">Drag brands to show how they're positioned</div>
+
+                <div class="positioning-canvas" id="positioningCanvas">
+                    <div class="axis axis-horizontal"></div>
+                    <div class="axis axis-vertical"></div>
+                    <div class="axis-label label-top">Premium</div>
+                    <div class="axis-label label-bottom">Budget</div>
+                    <div class="axis-label label-left">Traditional</div>
+                    <div class="axis-label label-right">Innovative</div>
+
+                    <!-- Draggable brand pieces -->
+                    <div class="brand-piece" style="background: #000; left: 70%; top: 20%;" draggable="true">
+                        <span class="brand-logo-emoji">🍎</span>
+                        <span>Apple</span>
+                    </div>
+                    <div class="brand-piece" style="background: #E50914; left: 65%; top: 35%;" draggable="true">
+                        <span class="brand-logo-emoji">🚗</span>
+                        <span>Tesla</span>
+                    </div>
+                    <div class="brand-piece" style="background: #0071CE; left: 25%; top: 70%;" draggable="true">
+                        <span class="brand-logo-emoji">🏪</span>
+                        <span>Walmart</span>
+                    </div>
+                    <div class="brand-piece" style="background: #FF9900; left: 55%; top: 60%;" draggable="true">
+                        <span class="brand-logo-emoji">📦</span>
+                        <span>Amazon</span>
+                    </div>
+                    <div class="brand-piece" style="background: #00A4E4; left: 30%; top: 40%;" draggable="true">
+                        <span class="brand-logo-emoji">💻</span>
+                        <span>Dell</span>
+                    </div>
+                    <div class="brand-piece" style="background: #4285F4; left: 60%; top: 45%;" draggable="true">
+                        <span class="brand-logo-emoji">🔍</span>
+                        <span>Google</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Quick Quiz -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Test Your Knowledge</h2>
+            <div class="quiz-container">
+                <div class="quiz-card">
+                    <div class="quiz-question">Which brand segment does Apple primarily target?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Budget-conscious consumers seeking value</div>
+                        <div class="quiz-option" data-correct="true">Premium customers who value design & innovation</div>
+                        <div class="quiz-option" data-correct="false">Enterprise businesses only</div>
+                        <div class="quiz-option" data-correct="false">Children and students</div>
+                    </div>
+                </div>
+
+                <div class="quiz-card">
+                    <div class="quiz-question">What makes Tesla's positioning unique?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Lowest price electric vehicles</div>
+                        <div class="quiz-option" data-correct="true">Luxury + sustainability + technology</div>
+                        <div class="quiz-option" data-correct="false">Traditional automotive reliability</div>
+                        <div class="quiz-option" data-correct="false">Best for ride-sharing services</div>
+                    </div>
+                </div>
+
+                <div class="quiz-card">
+                    <div class="quiz-question">What's the key to effective segmentation?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Create as many segments as possible</div>
+                        <div class="quiz-option" data-correct="false">Only use demographic data</div>
+                        <div class="quiz-option" data-correct="true">Find meaningful differences that drive behavior</div>
+                        <div class="quiz-option" data-correct="false">Keep segments secret from competitors</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 48px;">
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-value" id="correctAnswers">0</div>
+                        <div class="stat-label">Correct Answers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalScore">0%</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="progressPercent">0%</div>
+                        <div class="stat-label">Complete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // Navigation
-        function showSection(sectionId) {
-            document.querySelectorAll('.section-content').forEach(section => {
-                section.classList.remove('active');
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Drag and Drop Segmentation Game
+        let draggedElement = null;
+        let correctPlacements = 0;
+
+        document.querySelectorAll('.customer-card').forEach(card => {
+            card.addEventListener('dragstart', (e) => {
+                draggedElement = e.target;
+                e.target.style.opacity = '0.5';
             });
-            document.getElementById(sectionId).classList.add('active');
 
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
+            card.addEventListener('dragend', (e) => {
+                e.target.style.opacity = '1';
             });
-            event.target.classList.add('active');
-        }
+        });
 
-        // Segmentation detail
-        const segmentDetails = {
-            demographic: {
-                title: "Demographic Segmentation Deep Dive",
-                content: `
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">Common Demographic Variables:</h3>
-                    <ul style="color: var(--text-secondary); line-height: 2; margin-bottom: 20px;">
-                        <li><strong>Age:</strong> Gen Z (1997-2012), Millennials (1981-1996), Gen X (1965-1980), Boomers (1946-1964)</li>
-                        <li><strong>Gender:</strong> Male, Female, Non-binary (consider gender fluidity in modern segmentation)</li>
-                        <li><strong>Income:</strong> $0-30k, $30-60k, $60-100k, $100-200k, $200k+ (adjust for local purchasing power)</li>
-                        <li><strong>Education:</strong> High school, Bachelor's, Master's, PhD, Trade/vocational</li>
-                        <li><strong>Occupation:</strong> White-collar, blue-collar, professional, student, retired</li>
-                        <li><strong>Family:</strong> Single, married, parents, empty nesters, multigenerational</li>
-                    </ul>
-                    <div style="background: rgba(0, 122, 255, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                        <strong>Pro Tip:</strong> Demographics are easy to measure but don't explain WHY people buy. Always combine with psychographic or behavioral segmentation for deeper insight.
-                    </div>
-                `
-            },
-            geographic: {
-                title: "Geographic Segmentation Deep Dive",
-                content: `
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">Geographic Variables That Matter:</h3>
-                    <ul style="color: var(--text-secondary); line-height: 2; margin-bottom: 20px;">
-                        <li><strong>Region:</strong> North America, Europe, Asia-Pacific, LatAm, etc.</li>
-                        <li><strong>Country/State:</strong> Different regulations, cultures, purchasing power</li>
-                        <li><strong>Urban vs. Rural:</strong> Density affects needs (public transit vs. cars)</li>
-                        <li><strong>Climate:</strong> Weather drives product needs (winter coats, AC, swimwear)</li>
-                        <li><strong>Language:</strong> Localization isn't just translation—it's cultural adaptation</li>
-                    </ul>
-                    <div style="background: rgba(0, 122, 255, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                        <strong>Example:</strong> McDonald's adapts globally—McSpaghetti in Philippines, McAloo Tikki in India, Teriyaki Burger in Japan. Same brand, localized offerings.
-                    </div>
-                `
-            },
-            psychographic: {
-                title: "Psychographic Segmentation Deep Dive",
-                content: `
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">The "Why" Behind Behavior:</h3>
-                    <ul style="color: var(--text-secondary); line-height: 2; margin-bottom: 20px;">
-                        <li><strong>Values:</strong> Sustainability, status, family, freedom, security</li>
-                        <li><strong>Lifestyle:</strong> Adventurous, homebody, health-focused, career-driven</li>
-                        <li><strong>Personality:</strong> Risk-taker vs. risk-averse, introverted vs. extroverted</li>
-                        <li><strong>Interests:</strong> Sports, arts, technology, fashion, gaming</li>
-                        <li><strong>Opinions:</strong> Political views, brand attitudes, social causes</li>
-                    </ul>
-                    <div style="background: rgba(0, 122, 255, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                        <strong>Why It Matters:</strong> Two people with identical demographics can have completely different psychographics. A 35-year-old making $100k could be an eco-warrior driving a Prius or a status-seeker driving a BMW. Psychographics explain the difference.
-                    </div>
-                `
-            },
-            behavioral: {
-                title: "Behavioral Segmentation Deep Dive",
-                content: `
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">Segment by What People Actually Do:</h3>
-                    <ul style="color: var(--text-secondary); line-height: 2; margin-bottom: 20px;">
-                        <li><strong>Purchase Occasion:</strong> Regular, special occasion, seasonal, impulse</li>
-                        <li><strong>Usage Rate:</strong> Heavy users, medium users, light users, non-users</li>
-                        <li><strong>Brand Loyalty:</strong> Loyalists, switchers, variety-seekers</li>
-                        <li><strong>Benefits Sought:</strong> Quality, convenience, price, status, performance</li>
-                        <li><strong>Customer Journey Stage:</strong> Awareness, consideration, purchase, retention</li>
-                    </ul>
-                    <div style="background: rgba(0, 122, 255, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                        <strong>Power Move:</strong> The 80/20 rule applies—often 20% of customers drive 80% of revenue. Identify and obsess over your heavy users. Amazon Prime, airline status tiers, hotel loyalty programs all leverage behavioral segmentation.
-                    </div>
-                `
-            }
-        };
-
-        function selectSegment(type) {
-            const detail = document.getElementById('segmentDetail');
-            const data = segmentDetails[type];
-
-            detail.style.display = 'block';
-            detail.innerHTML = `
-                <h3 style="font-size: 20px; margin-bottom: 16px;">${data.title}</h3>
-                ${data.content}
-            `;
-
-            // Update active state
-            document.querySelectorAll('.segment-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            event.target.closest('.segment-card').classList.add('active');
-        }
-
-        // Tag selector
-        function toggleTag(element) {
-            element.classList.toggle('selected');
-        }
-
-        // Generate STP Summary
-        function generateSTPSummary() {
-            const segment1Name = document.getElementById('segment1Name').value;
-            const segment1Desc = document.getElementById('segment1Desc').value;
-            const targetSegment = document.getElementById('targetSegment').value;
-            const targetRationale = document.getElementById('targetRationale').value;
-            const positioningWord = document.getElementById('positioningWord').value;
-            const positioningStatement = document.getElementById('positioningStatement').value;
-
-            const selectedTargetingStrategy = document.querySelector('#targetingStrategy .tag.selected');
-            const selectedDifferentiators = Array.from(document.querySelectorAll('#differentiators .tag.selected')).map(tag => tag.textContent);
-
-            if (!segment1Name || !targetSegment || !positioningStatement) {
-                alert('Please fill in at least the segment name, target segment, and positioning statement!');
-                return;
-            }
-
-            const output = document.getElementById('stpOutput');
-            output.style.display = 'block';
-            output.innerHTML = `
-                <h3 style="font-size: 24px; margin-bottom: 24px; color: var(--accent);">📋 Your STP Strategy</h3>
-
-                <div style="margin-bottom: 24px;">
-                    <h4 style="font-size: 18px; margin-bottom: 12px; color: var(--text);">🎯 Segmentation</h4>
-                    <div style="background: var(--bg-elevated); padding: 16px; border-radius: 8px;">
-                        <strong>${segment1Name || 'Segment 1'}</strong>
-                        <p style="margin-top: 8px; color: var(--text-secondary);">${segment1Desc || 'No description provided'}</p>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <h4 style="font-size: 18px; margin-bottom: 12px; color: var(--text);">🎯 Targeting</h4>
-                    <div style="background: var(--bg-elevated); padding: 16px; border-radius: 8px;">
-                        <strong>Strategy:</strong> ${selectedTargetingStrategy ? selectedTargetingStrategy.textContent : 'Not selected'}<br>
-                        <strong>Primary Target:</strong> ${targetSegment}<br>
-                        <p style="margin-top: 8px; color: var(--text-secondary);"><strong>Rationale:</strong> ${targetRationale || 'No rationale provided'}</p>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <h4 style="font-size: 18px; margin-bottom: 12px; color: var(--text);">💎 Positioning</h4>
-                    <div style="background: var(--bg-elevated); padding: 16px; border-radius: 8px;">
-                        <strong>Your Word:</strong> <span style="color: var(--accent); font-size: 20px;">${positioningWord || 'Not defined'}</span><br>
-                        <p style="margin-top: 12px; line-height: 1.8; color: var(--text-secondary);">${positioningStatement}</p>
-                        ${selectedDifferentiators.length > 0 ? `<p style="margin-top: 12px;"><strong>Key Differentiators:</strong> ${selectedDifferentiators.join(', ')}</p>` : ''}
-                    </div>
-                </div>
-
-                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 24px; border-radius: 12px; margin-top: 24px;">
-                    <h4 style="font-size: 18px; margin-bottom: 12px;">✅ Next Steps</h4>
-                    <ol style="line-height: 2; opacity: 0.95;">
-                        <li>Test your positioning with real customers—does it resonate?</li>
-                        <li>Map your competitors on a positioning map—where do you fit?</li>
-                        <li>Audit all touchpoints (website, ads, packaging)—do they reinforce your positioning?</li>
-                        <li>Measure awareness of your positioning word—do customers associate it with you?</li>
-                        <li>Iterate—positioning isn't set in stone. Evolve as markets change.</li>
-                    </ol>
-                </div>
-            `;
-
-            output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        // Smooth scrolling for better UX
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        document.querySelectorAll('.segment-drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                zone.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+
+                if (draggedElement) {
+                    const targetSegment = zone.dataset.segment;
+                    const cardSegment = draggedElement.dataset.segment;
+
+                    const customerContainer = zone.querySelector('.segment-customers');
+                    customerContainer.appendChild(draggedElement);
+
+                    // Check if correct
+                    if (targetSegment === cardSegment) {
+                        draggedElement.style.background = 'linear-gradient(135deg, rgba(48, 209, 88, 0.3), rgba(48, 209, 88, 0.2))';
+                        correctPlacements++;
+                        celebrate();
+                    } else {
+                        draggedElement.style.background = 'linear-gradient(135deg, rgba(255, 45, 85, 0.3), rgba(255, 45, 85, 0.2))';
+                    }
+
+                    updateScore();
                 }
             });
         });
+
+        function updateScore() {
+            const total = document.querySelectorAll('.customer-card').length;
+            const score = Math.round((correctPlacements / total) * 100);
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.textContent = `🎉 Score: ${correctPlacements}/${total} (${score}%)`;
+            scoreDisplay.classList.add('show');
+        }
+
+        function celebrate() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = ['#007aff', '#bf5af2', '#ff2d55', '#30d158'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Market Simulator
+        const audienceSlider = document.getElementById('audienceSize');
+        const pricingSlider = document.getElementById('pricing');
+        const diffSlider = document.getElementById('differentiation');
+
+        function updateSimulator() {
+            const audience = parseInt(audienceSlider.value);
+            const pricing = parseInt(pricingSlider.value);
+            const diff = parseInt(diffSlider.value);
+
+            document.getElementById('audienceValue').textContent = audience;
+            document.getElementById('pricingValue').textContent = pricing;
+            document.getElementById('diffValue').textContent = diff;
+
+            // Calculate metrics
+            const baseRevenue = audience * pricing * 0.24;
+            const diffMultiplier = 1 + (diff / 10);
+            const revenue = Math.round(baseRevenue * diffMultiplier);
+
+            const marketShare = Math.min(Math.round((audience * pricing * diff) / 50), 45);
+            const ltv = Math.round(pricing * 48 * (diff / 10));
+
+            let competition = 'Low';
+            if (pricing > 7 || diff > 7) competition = 'Med';
+            if (pricing > 8 && diff > 8) competition = 'High';
+
+            document.getElementById('revenue').textContent = '$' + revenue + 'M';
+            document.getElementById('marketShare').textContent = marketShare + '%';
+            document.getElementById('ltv').textContent = '$' + ltv;
+            document.getElementById('competition').textContent = competition;
+
+            // Animate changes
+            const revenueChange = document.getElementById('revenueChange');
+            revenueChange.textContent = revenue > 12 ? '+' + (revenue - 12) + '%' : (revenue - 12) + '%';
+            revenueChange.className = 'result-change ' + (revenue > 12 ? 'positive' : 'negative');
+        }
+
+        audienceSlider.addEventListener('input', updateSimulator);
+        pricingSlider.addEventListener('input', updateSimulator);
+        diffSlider.addEventListener('input', updateSimulator);
+
+        // Positioning map drag
+        document.querySelectorAll('.brand-piece').forEach(piece => {
+            let isDragging = false;
+            let startX, startY, offsetX, offsetY;
+
+            piece.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                const rect = piece.getBoundingClientRect();
+                const canvas = document.getElementById('positioningCanvas').getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const canvas = document.getElementById('positioningCanvas').getBoundingClientRect();
+                    let x = ((e.clientX - canvas.left - offsetX) / canvas.width) * 100;
+                    let y = ((e.clientY - canvas.top - offsetY) / canvas.height) * 100;
+
+                    x = Math.max(5, Math.min(90, x));
+                    y = Math.max(5, Math.min(90, y));
+
+                    piece.style.left = x + '%';
+                    piece.style.top = y + '%';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        });
+
+        // Quiz
+        let correctCount = 0;
+        let totalQuestions = 3;
+        let answeredCount = 0;
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const parent = this.closest('.quiz-card');
+                const options = parent.querySelectorAll('.quiz-option');
+
+                // Disable all options in this question
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+
+                // Mark selected
+                if (this.dataset.correct === 'true') {
+                    this.classList.add('correct');
+                    correctCount++;
+                    celebrate();
+                } else {
+                    this.classList.add('incorrect');
+                }
+
+                answeredCount++;
+                updateQuizScore();
+            });
+        });
+
+        function updateQuizScore() {
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('totalScore').textContent = Math.round((correctCount / totalQuestions) * 100) + '%';
+            document.getElementById('progressPercent').textContent = Math.round((answeredCount / totalQuestions) * 100) + '%';
+        }
+
+        // Initialize
+        updateSimulator();
+        updateQuizScore();
     </script>
 </body>
 </html>
