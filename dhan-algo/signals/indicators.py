@@ -56,6 +56,22 @@ def iv_rank(current_iv: float, iv_history: list[float]) -> float:
     return (current_iv - low) / (high - low) * 100
 
 
+def crossed_above(fast: list[float], slow: list[float]) -> bool:
+    """
+    Returns True if fast crossed above slow on the last completed candle.
+    Requires at least 2 values in each list.
+    Condition: fast[-2] <= slow[-2]  AND  fast[-1] > slow[-1]
+    """
+    if len(fast) < 2 or len(slow) < 2:
+        return False
+    return fast[-2] <= slow[-2] and fast[-1] > slow[-1]
+
+
+def price_above_both(price: float, ema_fast: list[float], ema_slow: list[float]) -> bool:
+    """True when price is above both EMAs (trend confirmation)."""
+    return bool(ema_fast and ema_slow and price > ema_fast[-1] and price > ema_slow[-1])
+
+
 def atr(highs: list[float], lows: list[float], closes: list[float], period: int = 14) -> float:
     """Average True Range — used for dynamic stop-loss sizing."""
     if len(closes) < 2:

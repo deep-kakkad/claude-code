@@ -61,6 +61,31 @@ class MarketData:
             return []
         return resp.get("data", [])
 
+    def get_intraday_ohlc(
+        self,
+        security_id: str,
+        exchange_segment: str,
+        instrument_type: str,
+        interval: int = 5,
+        from_date: str = "",
+        to_date: str = "",
+    ) -> list[dict]:
+        """Fetch intraday OHLC candles (default 5-min) for today."""
+        from datetime import date
+        today = date.today().isoformat()
+        resp = self._dhan.intraday_minute_data(
+            security_id=security_id,
+            exchange_segment=exchange_segment,
+            instrument_type=instrument_type,
+            interval=interval,
+            from_date=from_date or today,
+            to_date=to_date or today,
+        )
+        if resp.get("status") != "success":
+            logger.error("Intraday OHLC fetch failed: %s", resp)
+            return []
+        return resp.get("data", [])
+
     def get_ltp(self, securities: list[dict]) -> dict[str, float]:
         """
         Get Last Traded Price for a list of securities.
