@@ -16,7 +16,23 @@ Usage:
 """
 import argparse
 import logging
+import os
 import time
+from pathlib import Path
+
+
+def _load_dotenv():
+    """Load .env from the script's directory if it exists."""
+    env_path = Path(__file__).parent / ".env"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, _, v = line.partition("=")
+                os.environ.setdefault(k.strip(), v.strip())
+
+
+_load_dotenv()
 
 from workflows.ema_crossover_buy import EmaCrossoverWorkflow
 
