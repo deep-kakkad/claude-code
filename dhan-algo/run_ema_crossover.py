@@ -2,14 +2,17 @@
 Runner: NIFTY 5EMA × 21EMA crossover → buy next-expiry ITM call.
 
 Usage:
-  # Paper trading (safe default)
-  DHAN_CLIENT_ID=xxx DHAN_ACCESS_TOKEN=yyy python run_ema_crossover.py
+  # Load credentials from .env then run paper trading
+  source .env && python run_ema_crossover.py
 
   # Live trading
-  DHAN_CLIENT_ID=xxx DHAN_ACCESS_TOKEN=yyy python run_ema_crossover.py --live
+  source .env && python run_ema_crossover.py --live
 
-  # Custom lot count
-  python run_ema_crossover.py --lots 2
+  # Custom SL/TP
+  python run_ema_crossover.py --live --tp 0.60 --sl 0.25
+
+  # 2 lots
+  python run_ema_crossover.py --live --lots 2
 """
 import argparse
 import logging
@@ -25,10 +28,10 @@ logging.basicConfig(
 logger = logging.getLogger("ema_runner")
 
 NIFTY_LOT = 75
-INTERVAL  = 5 * 60  # run every 5 minutes (aligned to candle close)
+INTERVAL  = 5 * 60   # every 5 minutes
 
 MARKET_OPEN  = (9, 15)
-MARKET_CLOSE = (15, 25)   # stop 5 min before close to avoid last-minute fills
+MARKET_CLOSE = (15, 25)   # stop 5 min before close
 
 
 def is_market_hours() -> bool:
@@ -44,18 +47,26 @@ def is_market_hours() -> bool:
 def main():
     parser = argparse.ArgumentParser(description="NIFTY EMA Crossover Call Buyer")
     parser.add_argument("--live", action="store_true", help="Place real orders")
-    parser.add_argument("--lots", type=int, default=1, help="Number of lots to buy")
+    parser.add_argument("--lots", type=int, default=1, help="Number of lots")
+    parser.add_argument("--tp", type=float, default=0.50,
+                        help="Take-profit %% of premium (default 0.50 = 50%%)")
+    parser.add_argument("--sl", type=float, default=0.30,
+                        help="Stop-loss %% of premium (default 0.30 = 30%%)")
     args = parser.parse_args()
 
     qty = args.lots * NIFTY_LOT
 
-    logger.info(
-        "Strategy : NIFTY 5EMA × 21EMA crossover → buy next-expiry ITM CE"
-    )
+    logger.info("Strategy : NIFTY 5EMA × 21EMA crossover → buy next-expiry ITM CE")
     logger.info("Quantity : %d (%d lot)", qty, args.lots)
+    logger.info("TP / SL  : +%.0f%% / -%.0f%%", args.tp * 100, args.sl * 100)
     logger.info("Mode     : %s", "LIVE" if args.live else "DRY RUN")
 
-    workflow = EmaCrossoverWorkflow(quantity=qty, dry_run=not args.live)
+    workflow = EmaCrossoverWorkflow(
+        quantity=qty,
+        dry_run=not args.live,
+        take_profit_pct=args.tp,
+        stop_loss_pct=args.sl,
+    )
 
     while True:
         if is_market_hours():
