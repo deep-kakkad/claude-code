@@ -1,15 +1,10 @@
 """
-EMA Crossover Strategy for NIFTY F&O call buying.
+EMA Crossover Strategy for NIFTY F&O — both CALL and PUT.
 
-Entry rule (all must be true on the last closed 5-min candle):
-  1. NIFTY close > 5 EMA  (price above fast EMA)
-  2. NIFTY close > 21 EMA (price above slow EMA)
-  3. 5 EMA crossed above 21 EMA on this candle   ← the trigger
+CALL entry : 21 EMA crossed ABOVE 51 EMA → buy ITM CE (strike below spot)
+PUT  entry : 21 EMA crossed BELOW 51 EMA → buy ITM PE (strike above spot)
 
-On signal: buy 1 ITM call of the NEXT weekly expiry.
-ITM strike = nearest strike BELOW spot (one strike in-the-money).
-
-One trade at a time — no new entry if a position is already open.
+One trade at a time. Uses 5-min candles.
 """
 from __future__ import annotations
 
@@ -22,16 +17,16 @@ from .strategy import Signal, TradeSignal
 
 logger = logging.getLogger(__name__)
 
-# NIFTY strikes are spaced 50 points apart
 NIFTY_STRIKE_STEP = 50
 
 
 @dataclass
 class CrossoverSignal:
     fired: bool
+    direction: str        # "CE" or "PE" or ""
     spot: float
-    ema5: float
-    ema21: float
+    ema_fast: float
+    ema_slow: float
     strike: float
     expiry: str
     security_id: str
@@ -40,56 +35,62 @@ class CrossoverSignal:
 
 class EmaCrossoverStrategy:
     """
-    Detects 5 EMA crossing above 21 EMA on 5-min NIFTY candles,
-    then returns the ITM call details to buy.
+    21 EMA × 51 EMA crossover on 5-min NIFTY candles.
+    Bullish cross → buy ITM CE. Bearish cross → buy ITM PE.
     """
 
-    def __init__(self, fast: int = 5, slow: int = 21, strike_step: int = NIFTY_STRIKE_STEP):
+    def __init__(self, fast: int = 21, slow: int = 51, strike_step: int = NIFTY_STRIKE_STEP):
         self.fast = fast
         self.slow = slow
         self.strike_step = strike_step
 
     def evaluate(
         self,
-        candles: list[dict],           # list of {"open","high","low","close","timestamp"}
-        option_chain: dict[str, Any],  # from MarketData.get_option_chain
+        candles: list[dict],
+        option_chain: dict[str, Any],
         expiry: str,
     ) -> CrossoverSignal:
-        """
-        Evaluate latest candles and return a CrossoverSignal.
-        candles must contain at least `slow` + 1 bars.
-        """
         closes = [c["close"] for c in candles]
-        spot = closes[-1]
+        spot   = closes[-1]
 
-        ema5  = ema(closes, self.fast)
-        ema21 = ema(closes, self.slow)
+        ema_f = ema(closes, self.fast)
+        ema_s = ema(closes, self.slow)
 
-        fired = crossed_above(ema5, ema21)
+        bull = crossed_above(ema_f, ema_s)   # 21 crossed above 51 → BUY CE
+        bear = crossed_above(ema_s, ema_f)   # 51 crossed above 21 → BUY PE
 
         logger.info(
-            "NIFTY spot=%.2f  5EMA=%.2f  21EMA=%.2f  crossover=%s",
-            spot, ema5[-1], ema21[-1], fired,
+            "NIFTY spot=%.2f  21EMA=%.2f  51EMA=%.2f  bull=%s  bear=%s",
+            spot, ema_f[-1], ema_s[-1], bull, bear,
         )
 
-        if not fired:
+        if not bull and not bear:
             return CrossoverSignal(
-                fired=False, spot=spot,
-                ema5=ema5[-1], ema21=ema21[-1],
+                fired=False, direction="", spot=spot,
+                ema_fast=ema_f[-1], ema_slow=ema_s[-1],
                 strike=0, expiry=expiry, security_id="", reason="No crossover",
             )
 
-        strike = self._itm_call_strike(spot)
-        security_id = self._lookup_security_id(option_chain, strike, "CE")
+        if bull:
+            direction = "CE"
+            strike    = self._itm_call_strike(spot)   # below spot
+            reason    = (
+                f"21EMA({ema_f[-1]:.1f}) crossed ABOVE 51EMA({ema_s[-1]:.1f}) "
+                f"— bullish | spot={spot:.1f} ITM CE strike={strike:.0f}"
+            )
+        else:
+            direction = "PE"
+            strike    = self._itm_put_strike(spot)    # above spot
+            reason    = (
+                f"21EMA({ema_f[-1]:.1f}) crossed BELOW 51EMA({ema_s[-1]:.1f}) "
+                f"— bearish | spot={spot:.1f} ITM PE strike={strike:.0f}"
+            )
 
-        reason = (
-            f"5EMA({ema5[-1]:.1f}) crossed above 21EMA({ema21[-1]:.1f}), "
-            f"spot={spot:.1f}, ITM strike={strike}"
-        )
+        security_id = self._lookup_security_id(option_chain, strike, direction)
 
         return CrossoverSignal(
-            fired=True, spot=spot,
-            ema5=ema5[-1], ema21=ema21[-1],
+            fired=True, direction=direction, spot=spot,
+            ema_fast=ema_f[-1], ema_slow=ema_s[-1],
             strike=strike, expiry=expiry,
             security_id=security_id, reason=reason,
         )
@@ -99,21 +100,25 @@ class EmaCrossoverStrategy:
             signal=Signal.BUY,
             underlying="NIFTY",
             strike=cs.strike,
-            option_type="CE",
+            option_type=cs.direction,
             expiry=cs.expiry,
             security_id=cs.security_id,
             reason=cs.reason,
         )
 
     def _itm_call_strike(self, spot: float) -> float:
-        """Nearest strike below spot = ITM call strike."""
+        """Nearest strike BELOW spot = ITM for calls."""
         return (spot // self.strike_step) * self.strike_step
+
+    def _itm_put_strike(self, spot: float) -> float:
+        """Nearest strike ABOVE spot = ITM for puts."""
+        base = (spot // self.strike_step) * self.strike_step
+        return base if base >= spot else base + self.strike_step
 
     def _lookup_security_id(
         self, option_chain: dict[str, Any], strike: float, opt_type: str
     ) -> str:
-        """Extract security_id for the given strike and option type from option chain."""
-        key = str(int(strike))
+        key   = str(int(strike))
         chain = option_chain.get("options_data", {}).get(key, {})
         if opt_type == "CE":
             return chain.get("call_options", {}).get("security_id", "")

@@ -1,11 +1,12 @@
 """
-EMA Crossover Call Buy Workflow.
+EMA Crossover Workflow — NIFTY CE and PE.
 
-Entry : 5 EMA crosses above 21 EMA on 5-min NIFTY candles (Yahoo Finance).
-Action: Buy next-expiry ITM CE via DhanHQ (strike lookup from instruments CSV).
-Exit  : Take-profit OR stop-loss on option premium, checked every 5 min.
+Entry:
+  Bullish: 21 EMA crosses ABOVE 51 EMA → buy next-expiry ITM CE
+  Bearish: 21 EMA crosses BELOW 51 EMA → buy next-expiry ITM PE
 
-Defaults:  TP = +50%  |  SL = -30%
+Exit: Take-profit (+50%) or Stop-loss (-30%) on option premium.
+Data: 5-min NIFTY candles via Yahoo Finance. Orders via DhanHQ.
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ from typing import Optional
 
 from config import load_config
 from data.nifty_feed import get_nifty_candles
-from data.instruments import get_nifty_expiries, get_itm_call, lot_size
+from data.instruments import get_nifty_expiries, find_option, get_itm_call, lot_size
 from orders import OrderManager
 from risk import RiskManager, PositionTracker
 from signals.ema_crossover import EmaCrossoverStrategy
@@ -22,11 +23,13 @@ from signals.strategy import Signal, TradeSignal
 
 logger = logging.getLogger(__name__)
 
+NIFTY_STRIKE_STEP = 50
+
 
 class EmaCrossoverWorkflow:
     def __init__(
         self,
-        quantity: int | None = None,   # None = auto (1 lot from instruments CSV)
+        quantity: int | None = None,
         dry_run: bool = True,
         take_profit_pct: float = 0.50,
         stop_loss_pct: float = 0.30,
@@ -36,30 +39,29 @@ class EmaCrossoverWorkflow:
         self.stop_loss_pct = stop_loss_pct
 
         cfg = load_config()
-        tracker        = PositionTracker()
-        risk           = RiskManager(cfg, tracker)
-        self._orders   = OrderManager(cfg, risk, dry_run=dry_run)
-        self._strategy = EmaCrossoverStrategy()
+        tracker      = PositionTracker()
+        risk         = RiskManager(cfg, tracker)
+        self._orders = OrderManager(cfg, risk, dry_run=dry_run)
+        self._strategy = EmaCrossoverStrategy()   # 21/51 EMA
 
         from dhanhq import DhanContext, dhanhq
-        from dhanhq import marketfeed
         ctx = DhanContext(cfg.client_id, cfg.access_token)
         self._dhan = dhanhq(ctx)
 
     def run(self):
-        logger.info("=== EMA Crossover Workflow ===")
+        logger.info("=== EMA Crossover Workflow (21/51) ===")
 
         open_positions = self._orders._risk.tracker.open_positions
 
-        # ── 1. Check exits on open position ──────────────────────────────────
+        # ── 1. Monitor open position for SL/TP ───────────────────────────────
         if open_positions:
             self._check_exits(open_positions)
             return
 
-        # ── 2. Fetch 5-min NIFTY candles (Yahoo Finance) ──────────────────────
+        # ── 2. Fetch 5-min NIFTY candles ─────────────────────────────────────
         candles = get_nifty_candles(interval="5m", period="5d")
-        if len(candles) < 22:
-            logger.warning("Insufficient candles (%d) — need 22+", len(candles))
+        if len(candles) < 52:   # need 51+ bars for 51 EMA to warm up
+            logger.warning("Insufficient candles (%d) — need 52+", len(candles))
             return
 
         spot = candles[-1]["close"]
@@ -70,52 +72,45 @@ class EmaCrossoverWorkflow:
         if len(expiries) < 2:
             logger.warning("Not enough expiries found")
             return
-        expiry = expiries[1]   # skip nearest, use next weekly
+        expiry = expiries[1]
         logger.info("Target expiry: %s", expiry)
 
-        # ── 4. Find ITM CE instrument ─────────────────────────────────────────
-        instrument = get_itm_call(spot, expiry)
+        # ── 4. Evaluate EMA crossover signal ──────────────────────────────────
+        cs = self._strategy.evaluate(candles, {}, expiry)
+
+        if not cs.fired:
+            logger.info("No signal | spot=%.2f  21EMA=%.2f  51EMA=%.2f",
+                        cs.spot, cs.ema_fast, cs.ema_slow)
+            return
+
+        logger.info("SIGNAL: %s", cs.reason)
+
+        # ── 5. Look up ITM instrument ─────────────────────────────────────────
+        instrument = self._get_itm_instrument(spot, expiry, cs.direction)
         if not instrument:
-            logger.error("Could not find ITM CE instrument for spot %.2f expiry %s", spot, expiry)
+            logger.error("No ITM %s instrument found for spot=%.0f expiry=%s",
+                         cs.direction, spot, expiry)
             return
 
         security_id = instrument["SEM_SMST_SECURITY_ID"]
         strike      = float(instrument["SEM_STRIKE_PRICE"])
         qty         = self._quantity_override or lot_size(instrument)
 
-        logger.info("ITM CE: %s  security_id=%s  lot=%d",
-                    instrument["SEM_TRADING_SYMBOL"], security_id, qty)
+        logger.info("ITM %s: %s  sid=%s  lot=%d",
+                    cs.direction, instrument["SEM_TRADING_SYMBOL"], security_id, qty)
 
-        # ── 5. Evaluate EMA crossover signal ──────────────────────────────────
-        # Build a minimal option_chain dict for strategy (just needs security_id)
-        mock_chain = {
-            "options_data": {
-                str(int(strike)): {
-                    "call_options": {"security_id": security_id},
-                }
-            }
-        }
-        cs = self._strategy.evaluate(candles, mock_chain, expiry)
-
-        if not cs.fired:
-            logger.info("No signal | spot=%.2f  5EMA=%.2f  21EMA=%.2f",
-                        cs.spot, cs.ema5, cs.ema21)
-            return
-
-        logger.info("ENTRY SIGNAL: %s", cs.reason)
-
-        # ── 6. Get option LTP for limit price ─────────────────────────────────
+        # ── 6. Get LTP and place order ────────────────────────────────────────
         ltp = self._get_ltp(security_id)
         if ltp <= 0:
-            logger.error("Could not get LTP for %s — cannot place order", security_id)
+            logger.error("Invalid LTP for %s — skipping order", security_id)
             return
 
-        limit_price = round(ltp * 1.002, 1)   # tiny buffer for fill
+        limit_price = round(ltp * 1.002, 1)
         signal = TradeSignal(
             signal=Signal.BUY,
             underlying="NIFTY",
             strike=strike,
-            option_type="CE",
+            option_type=cs.direction,
             expiry=expiry,
             security_id=security_id,
             reason=cs.reason,
@@ -126,16 +121,18 @@ class EmaCrossoverWorkflow:
         if resp and resp.get("status") in ("success", "simulated"):
             pos = self._orders._risk.tracker.open_positions
             if pos:
-                pos[-1]["entry_premium"] = limit_price
-                pos[-1]["underlying"]    = "NIFTY"
-                pos[-1]["strike"]        = strike
-                pos[-1]["option_type"]   = "CE"
-                pos[-1]["expiry"]        = expiry
+                pos[-1].update({
+                    "entry_premium": limit_price,
+                    "underlying":    "NIFTY",
+                    "strike":        strike,
+                    "option_type":   cs.direction,
+                    "expiry":        expiry,
+                })
             logger.info(
-                "Entered: %s @ ₹%.1f  |  TP @ ₹%.1f (+%.0f%%)  SL @ ₹%.1f (-%.0f%%)",
+                "Entered: %s @ ₹%.1f  |  TP ₹%.1f (+%.0f%%)  SL ₹%.1f (-%.0f%%)",
                 instrument["SEM_TRADING_SYMBOL"], limit_price,
                 limit_price * (1 + self.take_profit_pct), self.take_profit_pct * 100,
-                limit_price * (1 - self.stop_loss_pct),  self.stop_loss_pct  * 100,
+                limit_price * (1 - self.stop_loss_pct),   self.stop_loss_pct  * 100,
             )
 
     # ── Exit logic ────────────────────────────────────────────────────────────
@@ -144,22 +141,22 @@ class EmaCrossoverWorkflow:
         for pos in list(positions):
             ltp = self._get_ltp(pos["security_id"])
             if ltp <= 0:
-                logger.warning("No LTP for %s — skipping exit check", pos["security_id"])
+                logger.warning("No LTP for %s — skipping", pos["security_id"])
                 continue
 
-            entry    = pos.get("entry_premium", ltp)
-            pnl_pct  = (ltp - entry) / entry
-            pnl_inr  = (ltp - entry) * pos.get("quantity", 1)
+            entry   = pos.get("entry_premium", ltp)
+            pnl_pct = (ltp - entry) / entry
+            pnl_inr = (ltp - entry) * pos.get("quantity", 1)
 
             logger.info(
                 "Position: %s %.0f%s  entry=₹%.1f  ltp=₹%.1f  pnl=%+.1f%% (₹%+.0f)",
                 pos.get("underlying", "NIFTY"), pos.get("strike", 0),
-                pos.get("option_type", "CE"), entry, ltp, pnl_pct * 100, pnl_inr,
+                pos.get("option_type", "?"), entry, ltp, pnl_pct * 100, pnl_inr,
             )
 
             reason = self._exit_reason(pnl_pct)
             if reason:
-                logger.info("EXIT triggered: %s", reason)
+                logger.info("EXIT: %s", reason)
                 self._place_exit(pos, ltp, reason)
 
     def _exit_reason(self, pnl_pct: float) -> Optional[str]:
@@ -170,7 +167,6 @@ class EmaCrossoverWorkflow:
         return None
 
     def _place_exit(self, pos: dict, ltp: float, reason: str):
-        limit_price = round(ltp * 0.998, 1)
         exit_signal = TradeSignal(
             signal=Signal.EXIT,
             underlying=pos.get("underlying", "NIFTY"),
@@ -180,7 +176,22 @@ class EmaCrossoverWorkflow:
             security_id=pos["security_id"],
             reason=reason,
         )
-        self._orders.execute_signal(exit_signal, pos["quantity"], limit_price, confirm=False)
+        self._orders.execute_signal(
+            exit_signal, pos["quantity"], round(ltp * 0.998, 1), confirm=False
+        )
+
+    # ── Helpers ───────────────────────────────────────────────────────────────
+
+    def _get_itm_instrument(self, spot: float, expiry: str, direction: str) -> dict | None:
+        if direction == "CE":
+            # ITM call = strike below spot
+            strike = (spot // NIFTY_STRIKE_STEP) * NIFTY_STRIKE_STEP
+        else:
+            # ITM put = strike above spot
+            base   = (spot // NIFTY_STRIKE_STEP) * NIFTY_STRIKE_STEP
+            strike = base if base >= spot else base + NIFTY_STRIKE_STEP
+
+        return find_option("NIFTY", strike, direction, expiry)
 
     def _get_ltp(self, security_id: str) -> float:
         resp = self._dhan.ticker_data({"NSE_FNO": [security_id]})
